@@ -7,6 +7,9 @@ module.exports = {
       lightBlack: "#2F2F2F",
       lightWhite: "#fff",
       darkWhite: "#e5e5e5",
+      height: {
+        double: "200vh",
+      },
     },
   },
   plugins: [],

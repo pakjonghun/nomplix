@@ -1,8 +1,13 @@
-import React, { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { Link, Outlet } from "react-router-dom";
 import { TypeMenus } from "../utilities/types";
 import { idMaker, menuPathMapper } from "../utilities/utility";
+
+const h = {
+  initial: { backgroundColor: "rgba(0,0,0,0)" },
+  scroll: { backgroundColor: "rgba(0,0,0,1)" },
+};
 
 const manuMaker = (name: TypeMenus) => ({
   id: idMaker(),
@@ -15,11 +20,27 @@ const menus = [manuMaker("Home"), manuMaker("TV Show")];
 const Header = () => {
   const [curMenuId, setCurMenuId] = useState<null | string>(null);
   const [isSearchClicked, setIsSearchClicked] = useState(false);
+  const inputAnimation = useAnimation();
+  const headerAnimation = useAnimation();
+  const { scrollY } = useViewportScroll();
+
+  useEffect(() => {
+    scrollY.onChange(() => {
+      if (scrollY.get() > 80) {
+        headerAnimation.start("initial");
+      } else {
+        headerAnimation.start("scroll");
+      }
+    });
+  }, [scrollY, headerAnimation]);
 
   const onMenuClick = (menuId: string) => {
     setCurMenuId(menuId);
   };
+
   const onSearchClick = () => {
+    if (isSearchClicked) inputAnimation.start({ scaleX: 0 });
+    if (!isSearchClicked) inputAnimation.start({ scaleX: 1 });
     setIsSearchClicked(!isSearchClicked);
   };
 
@@ -41,7 +62,12 @@ const Header = () => {
 
   return (
     <>
-      <div className="fixed flex justify-between w-full h-20 px-5 bg-black">
+      <motion.div
+        variants={h}
+        initial="initial"
+        animate={headerAnimation}
+        className="fixed flex justify-between w-full h-20 px-5 bg-black"
+      >
         <ul className="flex item-center ">
           <li className="flex items-center h-full py-3 mr-9 cursor-pointer ">
             <motion.svg
@@ -67,15 +93,13 @@ const Header = () => {
                 to={menu.path}
                 className="relative flex flex-col justify-center items-center h-full mb-2 px-3 cursor-pointer"
               >
-                <AnimatePresence>
-                  <motion.span layout>{menu.name}</motion.span>
-                  {curMenuId === menu.id && (
-                    <motion.div
-                      layoutId={"we are menus"}
-                      className="absolute bottom-4 w-1.5 h-1.5 mt-1 select-none rounded-full bg-red-600"
-                    />
-                  )}
-                </AnimatePresence>
+                <motion.span layout>{menu.name}</motion.span>
+                {curMenuId === menu.id && (
+                  <motion.div
+                    layoutId={"we are menus"}
+                    className="absolute bottom-4 w-1.5 h-1.5 mt-1 select-none rounded-full bg-red-600"
+                  />
+                )}
               </Link>
             </li>
           ))}
@@ -97,19 +121,17 @@ const Header = () => {
                   d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
                 ></path>
               </motion.svg>
-              {isSearchClicked && (
-                <motion.input
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: isSearchClicked ? 1 : 0 }}
-                  transition={{ type: "linear" }}
-                  className="absolute -left-48 p-1 pl-10 text-orange-50 rounded-md focus:outline-none focus:ring-1 bg-stone-100/10 border-2 border-stone-100 focus:ring-white/50 origin-right -z-10"
-                  placeholder="Search for"
-                />
-              )}
+              <motion.input
+                animate={inputAnimation}
+                initial={{ scaleX: 0 }}
+                transition={{ type: "linear" }}
+                className="absolute -left-48 p-1 pl-10 text-orange-50 rounded-md focus:outline-none focus:ring-1 bg-stone-100/10 border-2 border-stone-100 focus:ring-white/50 origin-right -z-10"
+                placeholder="Search for"
+              />
             </div>
           </li>
         </ul>
-      </div>
+      </motion.div>
       <Outlet />
     </>
   );
