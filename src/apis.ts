@@ -1,9 +1,5 @@
 const API_KEY = "78c4651e6f70ef92cb879b749825122d";
 const BASIC_URL = "https://api.themoviedb.org/3/";
-const IMG_URL = "https://image.tmdb.org/t/p/";
-
-export const imageUrlMaker = (name: string, size: string) =>
-  `${IMG_URL}w${size}/${name}.jpg`;
 
 export const getNowPlayingMovie = async (url: string) => {
   try {

@@ -1,7 +1,10 @@
+import { url } from "inspector";
 import React from "react";
 import { useQuery } from "react-query";
+import { URL } from "url";
 import { movieApis } from "../apis";
 import Loading from "../components/Loading";
+import { imageUrlMaker } from "../utilities/utility";
 
 export type TypeMovie = {
   adult: boolean;
@@ -40,7 +43,23 @@ const Home = () => {
   if (isLoading) {
     return <Loading />;
   } else {
-    return <div className="h-double w-full  bg-gray-500"></div>;
+    return (
+      <div className="h-screen w-full bg-black text-white">
+        <article
+          style={{
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.0),rgba(0, 0, 0, 1)), url(
+              ${imageUrlMaker(data?.results[0].backdrop_path || "")}
+            )`,
+          }}
+          className="flex flex-col justify-center h-full w-full p-10 bg-contain bg-no-repeat "
+        >
+          <h1 className=" text-5xl font-bold mb-7">
+            {data?.results[0].original_title}
+          </h1>
+          <p className="w-1/2 text-3xl">{data?.results[0].overview}</p>
+        </article>
+      </div>
+    );
   }
 };
 
