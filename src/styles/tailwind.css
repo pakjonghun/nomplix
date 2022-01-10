@@ -1,6 +1,15 @@
 @tailwind base;
 @tailwind components;
 .menu {
-  @apply h-full flex items-center mr-7 text-white;
+  @apply flex items-center justify-center mx-7 px-3 h-full cursor-pointer select-none;
 }
+
+.header {
+  @apply flex justify-between items-center px-5 bg-black text-stone-50;
+}
+
+.searchInput {
+  @apply py-1 px-3 pl-10 bg-stone-300/20 border-2 border-stone-500 focus:ring-1 focus:ring-stone-200 focus:outline-none;
+}
+
 @tailwind utilities;
