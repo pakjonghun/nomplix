@@ -1,20 +1,35 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { TypeMenus } from "../utilities/types";
+import { idMaker, menuPathMapper } from "../utilities/utility";
 
-const iconSvg = {
-  initial: {
-    fillOpacity: 0,
-  },
-  animate: {
-    fillOpacity: 1,
-    transition: {
-      fill: { duration: 1, delay: 0.3 },
-    },
-  },
-};
+const manuMaker = (name: TypeMenus) => ({
+  id: idMaker(),
+  name,
+  path: menuPathMapper[name],
+});
+
+const menus = [manuMaker("Home"), manuMaker("TV Show")];
 
 const Header = () => {
+  const [curMenuId, setCurMenuId] = useState<null | string>(null);
+  const onClick = (menuId: string) => {
+    setCurMenuId(menuId);
+  };
+
+  const iconSvg = {
+    initial: {
+      fillOpacity: 0,
+    },
+    animate: {
+      fillOpacity: 1,
+      transition: {
+        fill: { duration: 1, delay: 0.3 },
+      },
+    },
+  };
+
   return (
     <>
       <div className="fixed flex justify-between w-full h-20 px-5 bg-black">
@@ -30,10 +45,10 @@ const Header = () => {
                 initial="initial"
                 animate="animate"
                 whileHover={{
-                  pathLength: [0, 1],
+                  pathLength: [0.9, 1, 0],
                 }}
                 transition={{
-                  pathLength: { repeat: Infinity, duration: 3 },
+                  pathLength: { repeat: Infinity, duration: 5 },
                 }}
                 fill="red"
                 strokeWidth={10}
@@ -42,22 +57,26 @@ const Header = () => {
               />
             </motion.svg>
           </li>
-          <li className="h-full mr-7 text-white ">
-            <Link
-              to="/"
-              className="flex items-center justify-center h-full px-3 cursor-pointer"
-            >
-              Home
-            </Link>
-          </li>
-          <li className="h-full mr-7 text-white ">
-            <Link
-              to="/"
-              className="flex items-center justify-center h-full px-3 cursor-pointer"
-            >
-              TV Show
-            </Link>
-          </li>
+
+          {menus.map((menu) => (
+            <li key={menu.id} className="h-full mr-7 text-white">
+              <Link
+                onClick={() => onClick(menu.id)}
+                to={menu.path}
+                className="relative flex flex-col justify-center items-center h-full mb-2 px-3 cursor-pointer"
+              >
+                <AnimatePresence>
+                  <motion.span layout>{menu.name}</motion.span>
+                  {curMenuId === menu.id && (
+                    <motion.div
+                      layoutId={"we are menus"}
+                      className="absolute bottom-4 w-1.5 h-1.5 mt-1 rounded-full bg-red-600"
+                    />
+                  )}
+                </AnimatePresence>
+              </Link>
+            </li>
+          ))}
         </ul>
 
         <ul className="flex items-center">
