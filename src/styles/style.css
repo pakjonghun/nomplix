@@ -558,6 +558,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin: 0px;
 }
 
+.mb-10 {
+  margin-bottom: 2.5rem;
+}
+
 .flex {
   display: flex;
 }
@@ -574,6 +578,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 200vh;
 }
 
+.h-screen {
+  height: 100vh;
+}
+
+.h-24 {
+  height: 6rem;
+}
+
 .w-2 {
   width: 0.5rem;
 }
@@ -586,6 +598,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 100%;
 }
 
+.w-screen {
+  width: 100vw;
+}
+
+.w-24 {
+  width: 6rem;
+}
+
 .origin-left {
   -webkit-transform-origin: left;
           transform-origin: left;
@@ -594,6 +614,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 .origin-right {
   -webkit-transform-origin: right;
           transform-origin: right;
+}
+
+.flex-col {
+  flex-direction: column;
 }
 
 .items-center {
@@ -612,9 +636,41 @@ Ensure the default browser behavior of the `hidden` attribute.
   border-width: 2px;
 }
 
+.border-8 {
+  border-width: 8px;
+}
+
+.border-t-0 {
+  border-top-width: 0px;
+}
+
+.border-b-0 {
+  border-bottom-width: 0px;
+}
+
 .border-stone-500 {
   --tw-border-opacity: 1;
   border-color: rgb(120 113 108 / var(--tw-border-opacity));
+}
+
+.border-red-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(239 68 68 / var(--tw-border-opacity));
+}
+
+.border-t-red-200 {
+  --tw-border-opacity: 1;
+  border-top-color: rgb(254 202 202 / var(--tw-border-opacity));
+}
+
+.border-b-red-200 {
+  --tw-border-opacity: 1;
+  border-bottom-color: rgb(254 202 202 / var(--tw-border-opacity));
+}
+
+.border-r-red-200 {
+  --tw-border-opacity: 1;
+  border-right-color: rgb(254 202 202 / var(--tw-border-opacity));
 }
 
 .bg-red-500 {
@@ -629,6 +685,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-gray-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
+}
+
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
 .p-0 {
@@ -654,9 +715,23 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-left: 2.5rem;
 }
 
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.font-extrabold {
+  font-weight: 800;
+}
+
 .text-stone-400 {
   --tw-text-opacity: 1;
   color: rgb(168 162 158 / var(--tw-text-opacity));
+}
+
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 
 .transition {

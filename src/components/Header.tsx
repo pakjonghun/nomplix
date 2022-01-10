@@ -9,7 +9,7 @@ const logoAni = {
 };
 
 const searchIconAni = {
-  initial: { x: 0 },
+  initial: { x: 50 },
   animate: (isSearching: boolean) => ({
     x: isSearching ? -100 : 50,
     transition: { type: "linear" },
