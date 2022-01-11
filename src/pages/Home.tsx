@@ -4,6 +4,7 @@ import { movieApis } from "../apis";
 import Loading from "../components/Loading";
 import { imageUrlMaker } from "../utilities/utility";
 import { motion, AnimatePresence, useMotionValue } from "framer-motion";
+import { useMatch, useNavigate, useParams } from "react-router-dom";
 
 export type TypeMovie = {
   adult: boolean;
@@ -66,10 +67,6 @@ const imgAni = {
 };
 
 const Home = () => {
-  const x = useMotionValue(0);
-  useEffect(() => {
-    x.onChange(() => console.log(x.get()));
-  }, [x]);
   const { isLoading, data } = useQuery<TypeData>(
     ["movie", "nowplay"],
     movieApis.nowPlaying
@@ -78,6 +75,10 @@ const Home = () => {
   const [index, setIndex] = useState(0);
   const [isSliding, setIsSliding] = useState(false);
   const [direction, setDirection] = useState(1);
+  const isModal = useMatch("/movies/:id");
+  const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const offset = (index: number) => {
     if (!data) return [];
@@ -112,6 +113,10 @@ const Home = () => {
   const onMinusClick = (totalPage: number) => {
     setDirection(-1);
     setIndex(!index ? totalPage : index - 1);
+  };
+
+  const onItemClick = (id: number) => {
+    navigate(`/movies/${id}`);
   };
 
   if (isLoading) {
@@ -155,19 +160,21 @@ const Home = () => {
               initial="init"
               animate="show"
               exit="exit"
-              className="grid grid-cols-6 gap-1 w-full px-5 mb-3"
+              className="absolute grid grid-cols-6 gap-1 w-full px-5 mb-3"
             >
               {offset(index).map((item) => {
                 return (
                   <motion.div
+                    layoutId={item.id + ""}
+                    onClick={() => onItemClick(item.id)}
                     variants={imgAni}
                     initial="normal"
                     whileHover="hover"
                     key={item.id}
                     transition={{ type: "tween" }}
-                    className="flex flex-col items-center justify-center first:origin-left last:origin-right group"
+                    className="flex flex-col items-center justify-center first:origin-left last:origin-right group cursor-pointer"
                   >
-                    <motion.img
+                    <img
                       alt={item.original_title}
                       src={imageUrlMaker(item.backdrop_path, "w500")}
                     />
@@ -184,6 +191,21 @@ const Home = () => {
             </motion.div>
           </AnimatePresence>
         </section>
+        <AnimatePresence>
+          {isModal && (
+            <motion.div
+              onClick={() => navigate("/")}
+              className="absolute flex items-center justify-center w-screen h-screen bg-gradient-to-b from-slate-500/0 to-slate-200/10"
+            >
+              <motion.div
+                layoutId={id}
+                className=" w-2/5 h-2/5 bg-gray-300 rounded-md shadow-lg"
+              >
+                1
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     );
   }

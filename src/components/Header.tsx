@@ -33,7 +33,9 @@ const searchInputAni = {
 const Header = () => {
   const [isSearching, setIsSearching] = useState(false);
   const isHome = useMatch("/");
+  const isModal = useMatch("/movies/:id");
   const isTv = useMatch("/tv");
+
   const { scrollY } = useViewportScroll();
   const rgb = useTransform(
     scrollY,
@@ -65,7 +67,7 @@ const Header = () => {
             <Link className="menu" to="/">
               Home
             </Link>
-            {isHome && (
+            {(isHome || isModal) && (
               <motion.div
                 layoutId="menu"
                 className="absolute bottom-1 w-2 h-2 bg-red-500 rounded-full"
@@ -88,6 +90,7 @@ const Header = () => {
           <li className="relative flex items-center">
             <AnimatePresence initial={false}>
               <motion.svg
+                key="unique"
                 variants={searchIconAni}
                 initial="initial"
                 animate="animate"
