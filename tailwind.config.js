@@ -9,6 +9,8 @@ module.exports = {
       darkWhite: "#e5e5e5",
       height: {
         double: "200vh",
+        half: "50vh",
+        "screen2/3": "70vh",
       },
     },
   },

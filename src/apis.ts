@@ -1,7 +1,7 @@
 const API_KEY = "78c4651e6f70ef92cb879b749825122d";
 const BASIC_URL = "https://api.themoviedb.org/3/";
 
-export const getNowPlayingMovie = async (url: string) => {
+export const getData = async (url: string) => {
   try {
     const res = await fetch(url);
     if (res.status < 400) return res.json();
@@ -13,7 +13,8 @@ export const getNowPlayingMovie = async (url: string) => {
 
 export const movieApis = {
   nowPlaying: () =>
-    getNowPlayingMovie(
+    getData(
       `${BASIC_URL}movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`
     ),
+  detail: () => getData(`${BASIC_URL}movie/`),
 };

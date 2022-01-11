@@ -3,8 +3,14 @@ import { useQuery } from "react-query";
 import { movieApis } from "../apis";
 import Loading from "../components/Loading";
 import { imageUrlMaker } from "../utilities/utility";
-import { motion, AnimatePresence, useMotionValue } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useViewportScroll,
+} from "framer-motion";
 import { useMatch, useNavigate, useParams } from "react-router-dom";
+import { Item } from "framer-motion/types/components/Reorder/Item";
 
 export type TypeMovie = {
   adult: boolean;
@@ -72,11 +78,14 @@ const Home = () => {
     movieApis.nowPlaying
   );
 
+  // const { isLoading: isDetailLoading, data: detailData } = useQuery<>();
+
   const [index, setIndex] = useState(0);
   const [isSliding, setIsSliding] = useState(false);
   const [direction, setDirection] = useState(1);
   const isModal = useMatch("/movies/:id");
   const { id } = useParams();
+  const { scrollY } = useViewportScroll();
 
   const navigate = useNavigate();
 
@@ -119,6 +128,9 @@ const Home = () => {
     navigate(`/movies/${id}`);
   };
 
+  const clickedMovie = isModal && data?.results.find((m) => m.id === +id!);
+  console.log(clickedMovie);
+
   if (isLoading) {
     return <Loading />;
   } else {
@@ -130,7 +142,7 @@ const Home = () => {
               ${imageUrlMaker(data?.results[0].backdrop_path || "")}
             )`,
           }}
-          className="mt-20 sm:text-base flex flex-col justify-center h-full w-full p-10 bg-contain bg-no-repeat"
+          className="mt-20 sm:text-base flex flex-col justify-center h-full w-full  p-10 bg-contain bg-no-repeat"
         >
           <div className="-mt-64 sm:-mt-52 lg:-mt-32">
             <h1
@@ -147,7 +159,7 @@ const Home = () => {
             </p>
           </div>
         </section>
-        <section className="relative w-full h-1/6 -top-64 sm:-top-52 lg:-top-32 bg-black">
+        <section className="relative w-full  h-1/6 -top-64 sm:-top-52 lg:-top-32 bg-black">
           <AnimatePresence
             initial={false}
             onExitComplete={() => setIsSliding(false)}
@@ -160,13 +172,13 @@ const Home = () => {
               initial="init"
               animate="show"
               exit="exit"
-              className="absolute grid grid-cols-6 gap-1 w-full px-5 mb-3"
+              className="absolute top-0 grid grid-cols-6 gap-1 w-full px-5 mb-3"
             >
               {offset(index).map((item) => {
                 return (
                   <motion.div
-                    layoutId={item.id + ""}
                     onClick={() => onItemClick(item.id)}
+                    layoutId={item.id + ""}
                     variants={imgAni}
                     initial="normal"
                     whileHover="hover"
@@ -179,7 +191,7 @@ const Home = () => {
                       src={imageUrlMaker(item.backdrop_path, "w500")}
                     />
                     <motion.div
-                      className=" w-full origin-top opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-250 text-center"
+                      className="absolute w-full origin-top opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-250 text-center"
                       initial="normal"
                       animate="hover"
                     >
@@ -193,17 +205,44 @@ const Home = () => {
         </section>
         <AnimatePresence>
           {isModal && (
-            <motion.div
-              onClick={() => navigate("/")}
-              className="absolute flex items-center justify-center w-screen h-screen bg-gradient-to-b from-slate-500/0 to-slate-200/10"
-            >
+            <>
               <motion.div
+                exit={{ opacity: 0 }}
+                onClick={(event: React.MouseEvent<HTMLDivElement>) => {
+                  const t = event.target as HTMLDivElement;
+                  if (t.matches("#modal")) return;
+                  navigate("/");
+                }}
+                className="fixed top-0 w-full h-screen bg-gradient-to-b from-slate-600/30 to-slate-200/0 "
+              ></motion.div>
+              <motion.div
+                style={{ top: scrollY.get() + 50 }}
+                id="modal"
                 layoutId={id}
-                className=" w-2/5 h-2/5 bg-gray-300 rounded-md shadow-lg"
+                className="absolute w-7/12 h-screen2/3 bg-gray-800 rounded-md shadow-lg"
               >
-                1
+                {clickedMovie && (
+                  <>
+                    <div
+                      className="w-full h-2/4 bg-no-repeat bg-contain bg-top"
+                      style={{
+                        backgroundImage: `linear-gradient(rgba(0,0,0,.3),transparent)
+                        ,url(${imageUrlMaker(clickedMovie.backdrop_path)})`,
+                      }}
+                    ></div>
+                    <h2 className="relative -top-1/4 left-5 text-2xl font-bold">
+                      {clickedMovie.original_title}
+                    </h2>
+                    <div className="">
+                      <span>{clickedMovie.release_date}</span>
+                      <span>{clickedMovie.vote_average}</span>
+                      <span>{clickedMovie.original_language}</span>
+                    </div>
+                    <p>{clickedMovie.overview}</p>
+                  </>
+                )}
               </motion.div>
-            </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>

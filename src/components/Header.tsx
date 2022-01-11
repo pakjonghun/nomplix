@@ -47,7 +47,7 @@ const Header = () => {
     <>
       <motion.header
         style={{ backgroundColor: rgb }}
-        className="fixed w-full top-0 header "
+        className="fixed top-0 w-full header"
       >
         <ul className="flex">
           <li>
@@ -56,7 +56,7 @@ const Header = () => {
               initial={"initial"}
               animate={"animate"}
               whileHover={"hover"}
-              className="menu h-14 py-3"
+              className="menu h-16 py-3"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 1024 276.742"
             >
@@ -87,7 +87,7 @@ const Header = () => {
           </li>
         </ul>
         <ul>
-          <li className="relative flex items-center">
+          <li className=" relative flex items-center">
             <AnimatePresence initial={false}>
               <motion.svg
                 key="unique"
