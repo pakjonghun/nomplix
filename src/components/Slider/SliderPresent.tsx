@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { TypeMovie } from "../../utilities/types";
 import { imageUrlMaker } from "../../utilities/utility";
 import { imgAni, pagingAni } from "./SliderAnimation";
 
@@ -15,7 +14,14 @@ type SliderPresenterProps = {
     index: number;
     itemCount: number;
   };
-  data: TypeMovie[];
+  data: TypeData[];
+};
+
+type TypeData = {
+  id: number;
+  title: string;
+  original_title: string;
+  backdrop_path: string;
 };
 
 const SliderPresenter: FC<SliderPresenterProps> = ({ funcs, props, data }) => {

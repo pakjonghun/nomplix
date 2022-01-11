@@ -3,15 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { TypeData } from "../../utilities/types";
 import SliderPresenter from "./SliderPresent";
 
-type SliderContainerProps<T extends object> = {
-  data: T;
+type SliderContainerProps = {
+  data: TypeData;
   itemCount: number;
 };
 
-const SliderContainer: FC<SliderContainerProps<TypeData>> = ({
-  data,
-  itemCount,
-}) => {
+const SliderContainer: FC<SliderContainerProps> = ({ data, itemCount }) => {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isSliding, setIsSliding] = useState(false);
