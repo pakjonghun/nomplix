@@ -16,5 +16,10 @@ export const movieApis = {
     getData(
       `${BASIC_URL}movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`
     ),
-  detail: () => getData(`${BASIC_URL}movie/`),
+
+  detail: (id: string) => getData(`${BASIC_URL}movie/${id}?api_key=${API_KEY}`),
+
+  search: () => getData(`${BASIC_URL}/`),
 };
+
+// search/multi?api_key=<<api_key>>&language=en-US&page=1&include_adult=false

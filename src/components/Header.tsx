@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Outlet, useMatch } from "react-router-dom";
+import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
   AnimatePresence,
@@ -43,6 +43,7 @@ const Header = () => {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors },
   } = useForm<TypeForm>();
 
@@ -53,8 +54,9 @@ const Header = () => {
     ["rgba(0,0,0,1)", "rgba(0,0,0,0)"]
   );
 
+  const navigate = useNavigate();
   const onSubmit = (data: TypeForm) => {
-    console.log(data);
+    navigate(`/movies?term=${data.term}`);
   };
 
   return (
@@ -70,7 +72,7 @@ const Header = () => {
               initial={"initial"}
               animate={"animate"}
               whileHover={"hover"}
-              className="menu h-16 py-3"
+              className="menu h-12 py-3 m-0"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 1024 276.742"
             >
@@ -84,7 +86,7 @@ const Header = () => {
             {(isHome || isModal) && (
               <motion.div
                 layoutId="menu"
-                className="absolute bottom-1 w-2 h-2 bg-red-500 rounded-full"
+                className="absolute bottom-1 sm:-bottom-1 w-1 h-1 sm:w-2 sm:h-2 bg-red-500 rounded-full"
               />
             )}
           </li>
@@ -95,7 +97,7 @@ const Header = () => {
             {isTv && (
               <motion.div
                 layoutId="menu"
-                className="absolute bottom-1 w-2 h-2 bg-red-500 rounded-full"
+                className="absolute bottom-1 sm:-bottom-1 w-1 h-1 sm:w-2 sm:h-2  bg-red-500 rounded-full"
               />
             )}
           </li>
@@ -110,7 +112,10 @@ const Header = () => {
                 animate="animate"
                 custom={isSearching}
                 className="absolute left-3 m-0 menu w-5 p-0 text-stone-400 z-20"
-                onClick={() => setIsSearching(!isSearching)}
+                onClick={() => {
+                  if (!isSearching) setFocus("term");
+                  setIsSearching(!isSearching);
+                }}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512"
               >
