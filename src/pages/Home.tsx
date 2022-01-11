@@ -35,7 +35,7 @@ type TypeData = {
 
 const pagingNumger = 6;
 
-const paging = {
+const pagingAni = {
   init: (d: number) => ({
     x: d > 0 ? -window.innerWidth - 10 : window.innerWidth + 10,
   }),
@@ -53,6 +53,16 @@ const paging = {
       type: "tween",
     },
   }),
+};
+
+const imgAni = {
+  normal: { scale: 1 },
+  hover: {
+    scaleY: 1.3,
+    scaleX: 1.2,
+    y: -50,
+    transition: { type: "tween", delay: 0.2, duration: 0.3 },
+  },
 };
 
 const Home = () => {
@@ -108,26 +118,31 @@ const Home = () => {
     return <Loading />;
   } else {
     return (
-      <div className="h-screen w-full bg-black text-white">
+      <div className="flex flex-col items-center justify-center h-screen w-full bg-black text-white">
         <section
           style={{
             backgroundImage: `linear-gradient(rgba(0,0,0,0.0),rgba(0, 0, 0, 1)), url(
               ${imageUrlMaker(data?.results[0].backdrop_path || "")}
             )`,
           }}
-          className="flex flex-col justify-center h-full w-full p-10 bg-contain bg-no-repeat"
+          className="mt-20 sm:text-base flex flex-col justify-center h-full w-full p-10 bg-contain bg-no-repeat"
         >
-          <h1
-            onClick={() => onClickController(-1)}
-            className=" text-5xl font-bold mb-7"
-          >
-            {data?.results[0].original_title}
-          </h1>
-          <p onClick={() => onClickController(1)} className="w-1/2 text-3xl">
-            {data?.results[0].overview}
-          </p>
+          <div className="-mt-64 sm:-mt-52 lg:-mt-32">
+            <h1
+              onClick={() => onClickController(-1)}
+              className=" text-2xl font-bold mb-7"
+            >
+              {data?.results[0].original_title}
+            </h1>
+            <p onClick={() => onClickController(1)} className="w-1/2 text-xl">
+              {data?.results[0].overview &&
+              data?.results[0].overview.length > 100
+                ? data?.results[0].overview
+                : data?.results[0].overview.substring(0, 100)}
+            </p>
+          </div>
         </section>
-        <section className="relative">
+        <section className="relative w-full h-1/6 -top-64 sm:-top-52 lg:-top-32 bg-black">
           <AnimatePresence
             initial={false}
             onExitComplete={() => setIsSliding(false)}
@@ -136,20 +151,34 @@ const Home = () => {
             <motion.div
               custom={direction}
               key={index}
-              variants={paging}
+              variants={pagingAni}
               initial="init"
               animate="show"
               exit="exit"
-              className="absolute -top-28 grid grid-cols-6 gap-5 w-full px-5 mb-3"
+              className="grid grid-cols-6 gap-1 w-full px-5 mb-3"
             >
-              {offset(index).map((item, idx) => {
+              {offset(index).map((item) => {
                 return (
-                  <img
+                  <motion.div
+                    variants={imgAni}
+                    initial="normal"
+                    whileHover="hover"
                     key={item.id}
-                    alt={item.original_title}
-                    src={imageUrlMaker(item.poster_path, "w200")}
-                    className=" bg-red-300 "
-                  />
+                    transition={{ type: "tween" }}
+                    className="flex flex-col items-center justify-center first:origin-left last:origin-right group"
+                  >
+                    <motion.img
+                      alt={item.original_title}
+                      src={imageUrlMaker(item.backdrop_path, "w500")}
+                    />
+                    <motion.div
+                      className=" w-full origin-top opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-250 text-center"
+                      initial="normal"
+                      animate="hover"
+                    >
+                      <h4 className=" text-xs">{item.title}</h4>
+                    </motion.div>
+                  </motion.div>
                 );
               })}
             </motion.div>

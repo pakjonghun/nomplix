@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Link, Outlet, useMatch } from "react-router-dom";
-import { motion, useTransform, useViewportScroll } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useTransform,
+  useViewportScroll,
+} from "framer-motion";
 
 const logoAni = {
   initial: { fill: "rgb(255,255,255)" },
@@ -9,17 +14,17 @@ const logoAni = {
 };
 
 const searchIconAni = {
-  initial: { x: 50 },
+  initial: { x: 150 },
   animate: (isSearching: boolean) => ({
-    x: isSearching ? -100 : 50,
+    x: isSearching ? 0 : 200,
     transition: { type: "linear" },
   }),
 };
 
 const searchInputAni = {
-  initial: { x: -100, scaleX: 0 },
+  initial: { x: 0, scaleX: 0 },
   animate: (isSearching: boolean) => ({
-    x: isSearching ? -100 : 100,
+    x: isSearching ? 0 : 250,
     scaleX: isSearching ? 1 : 0,
     transition: { type: "linear" },
   }),
@@ -40,7 +45,7 @@ const Header = () => {
     <>
       <motion.header
         style={{ backgroundColor: rgb }}
-        className="fixed w-full header"
+        className="fixed w-full top-0 header "
       >
         <ul className="flex">
           <li>
@@ -81,29 +86,31 @@ const Header = () => {
         </ul>
         <ul>
           <li className="relative flex items-center">
-            <motion.svg
-              variants={searchIconAni}
-              initial="initial"
-              animate="animate"
-              custom={isSearching}
-              className="absolute left-3 m-0 menu w-5 p-0 text-stone-400 z-20"
-              onClick={() => setIsSearching(!isSearching)}
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-            >
-              <motion.path
-                fill="currentColor"
-                d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
-              ></motion.path>
-            </motion.svg>
-            <motion.input
-              custom={isSearching}
-              variants={searchInputAni}
-              initial="initial"
-              animate="animate"
-              className="searchInput z-10 origin-left"
-              placeholder="Search for"
-            />
+            <AnimatePresence initial={false}>
+              <motion.svg
+                variants={searchIconAni}
+                initial="initial"
+                animate="animate"
+                custom={isSearching}
+                className="absolute left-3 m-0 menu w-5 p-0 text-stone-400 z-20"
+                onClick={() => setIsSearching(!isSearching)}
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+              >
+                <motion.path
+                  fill="currentColor"
+                  d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                ></motion.path>
+              </motion.svg>
+              <motion.input
+                custom={isSearching}
+                variants={searchInputAni}
+                initial="initial"
+                animate="animate"
+                className="searchInput z-10 origin-left"
+                placeholder="Search for"
+              />
+            </AnimatePresence>
           </li>
         </ul>
       </motion.header>
