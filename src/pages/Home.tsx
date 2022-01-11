@@ -3,11 +3,12 @@ import { useQuery } from "react-query";
 import { movieApis } from "../apis";
 import Loading from "../components/Loading";
 import { imageUrlMaker } from "../utilities/utility";
-import { motion, AnimatePresence } from "framer-motion";
-import { useMatch, useNavigate, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useParams } from "react-router-dom";
 import Detail from "../components/Detail";
 import Slider from "../components/Slider";
 import { TypeData } from "../utilities/types";
+import Modal from "../components/Modal";
 
 const Home = () => {
   const { isLoading, data } = useQuery<TypeData>(
@@ -15,11 +16,8 @@ const Home = () => {
     movieApis.nowPlaying
   );
 
-  const isModal = useMatch("/movies/:id");
   const { id } = useParams();
-  const navigate = useNavigate();
-
-  const clickedMovie = isModal && data?.results.find((m) => m.id === +id!);
+  const clickedMovie = data?.results.find((m) => m.id === +id!);
 
   if (isLoading) {
     return <Loading />;
@@ -48,24 +46,9 @@ const Home = () => {
         </motion.section>
         {data && <Slider data={data} itemCount={5} />}
 
-        <AnimatePresence>
-          {isModal && (
-            <>
-              <motion.div
-                exit={{ opacity: 0 }}
-                onClick={(event: React.MouseEvent<HTMLDivElement>) => {
-                  const t = event.target as HTMLDivElement;
-                  if (t.matches("#modal")) return;
-                  navigate("/");
-                }}
-                className="fixed top-0 w-full h-screen bg-gradient-to-b from-slate-600/30 to-slate-200/0"
-              />
-              {id && clickedMovie && (
-                <Detail id={id} clickedMovie={clickedMovie} />
-              )}
-            </>
-          )}
-        </AnimatePresence>
+        <Modal childId="modal" backAdress="/" forwordAdress="/movies/:id">
+          {id && clickedMovie && <Detail id={id} clickedMovie={clickedMovie} />}
+        </Modal>
       </div>
     );
   }
