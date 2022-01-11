@@ -1,5 +1,6 @@
-const API_KEY = "78c4651e6f70ef92cb879b749825122d";
+const API_KEY = process.env.REACT_APP_KEY;
 const BASIC_URL = "https://api.themoviedb.org/3/";
+console.log(API_KEY);
 
 export const getData = async (url: string) => {
   try {
