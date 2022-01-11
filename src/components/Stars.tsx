@@ -18,7 +18,7 @@ const Stars: FC<{ vote: number }> = ({ vote }) => {
           animate="animate"
           transition={{
             type: "linear",
-            opacity: { delay: 0.5 * idx },
+            opacity: { delay: 0.3 * idx },
           }}
           className="w-5"
           xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +39,7 @@ const Stars: FC<{ vote: number }> = ({ vote }) => {
           animate="animate"
           transition={{
             type: "linear",
-            opacity: { delay: 0.5 * num },
+            opacity: { delay: 0.3 * num },
           }}
           className="w-5"
           xmlns="http://www.w3.org/2000/svg"

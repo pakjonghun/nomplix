@@ -134,10 +134,10 @@ const Home = () => {
         <section
           style={{
             backgroundImage: `linear-gradient(rgba(0,0,0,0.0),rgba(0, 0, 0, 1)), url(
-              ${imageUrlMaker(data?.results[0].backdrop_path || "")}
+              ${imageUrlMaker(data?.results[0].backdrop_path || "", "w500")}
             )`,
           }}
-          className="mt-20 sm:text-base flex flex-col justify-center h-full w-full  p-10 bg-contain bg-no-repeat"
+          className="mt-20 sm:text-base flex flex-col justify-center h-full w-full  p-10 bg-cover bg-no-repeat"
         >
           <div className="-mt-64 sm:-mt-52 lg:-mt-32">
             <h1
@@ -212,7 +212,7 @@ const Home = () => {
                   if (t.matches("#modal")) return;
                   navigate("/");
                 }}
-                className="fixed top-0 w-full h-screen bg-gradient-to-b from-slate-600/30 to-slate-200/0 "
+                className="fixed top-0 w-full h-screen bg-gradient-to-b from-slate-600/30 to-slate-200/0"
               ></motion.div>
               <motion.div
                 style={{ top: scrollY.get() + 50 }}
@@ -223,7 +223,7 @@ const Home = () => {
                 {clickedMovie && (
                   <>
                     <div
-                      className="w-full h-2/4 bg-no-repeat bg-contain bg-top"
+                      className="w-full h-2/4 bg-no-repeat bg-cover bg-top"
                       style={{
                         backgroundImage: `linear-gradient(rgba(0,0,0,.3),transparent)
                         ,url(${imageUrlMaker(clickedMovie.backdrop_path)})`,
@@ -232,7 +232,7 @@ const Home = () => {
                     <h2 className="relative -top-1/4 left-5 text-2xl font-bold">
                       {clickedMovie.original_title}
                     </h2>
-                    <div className="relative -top-20 px-5">
+                    <div className="relative -top-18 px-5">
                       <div className="flex mb-5">
                         <span className="mr-5">
                           {clickedMovie.release_date}
