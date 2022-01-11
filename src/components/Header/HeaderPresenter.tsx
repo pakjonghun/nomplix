@@ -1,63 +1,39 @@
-import React, { useState } from "react";
-import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import React, { FC } from "react";
+import { Link, Outlet, PathMatch } from "react-router-dom";
+import { AnimatePresence, motion, MotionValue } from "framer-motion";
+import { logoAni, searchIconAni, searchInputAni } from "./HeaderAnimation";
 import {
-  AnimatePresence,
-  motion,
-  useTransform,
-  useViewportScroll,
-} from "framer-motion";
+  FieldError,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormSetFocus,
+} from "react-hook-form";
+import { TypeForm } from "./HeaderContainer";
 
-const logoAni = {
-  initial: { fill: "rgb(255,255,255)" },
-  animate: { fill: "rgb(255,0,0)" },
-  hover: { fillOpacity: [1, 0.5, 1] },
-};
-
-const searchIconAni = {
-  initial: { x: 150 },
-  animate: (isSearching: boolean) => ({
-    x: isSearching ? 0 : 200,
-    transition: { type: "linear" },
-  }),
-};
-
-const searchInputAni = {
-  initial: { x: 0, scaleX: 0 },
-  animate: (isSearching: boolean) => ({
-    x: isSearching ? 0 : 250,
-    scaleX: isSearching ? 1 : 0,
-    transition: { type: "linear" },
-  }),
-};
-
-type TypeForm = {
-  term: string;
-};
-
-const Header = () => {
-  const [isSearching, setIsSearching] = useState(false);
-  const isHome = useMatch("/");
-  const isModal = useMatch("/movies/:id");
-  const isTv = useMatch("/tv");
-  const {
-    register,
-    handleSubmit,
-    setFocus,
-    formState: { errors },
-  } = useForm<TypeForm>();
-
-  const { scrollY } = useViewportScroll();
-  const rgb = useTransform(
-    scrollY,
-    [0, 80],
-    ["rgba(0,0,0,1)", "rgba(0,0,0,0)"]
-  );
-
-  const navigate = useNavigate();
-  const onSubmit = (data: TypeForm) => {
-    navigate(`/movies?term=${data.term}`);
+type HeaderPresenterProps = {
+  props: {
+    rgb: MotionValue<string>;
+    isHome: PathMatch<string> | null;
+    isModal: PathMatch<string> | null;
+    isTv: PathMatch<string> | null;
+    isSearching: boolean;
+    errors: {
+      term?: FieldError | undefined;
+    };
   };
+  funcs: {
+    onSubmit: (data: TypeForm) => void;
+    register: UseFormRegister<TypeForm>;
+    toggleIsSearching: (value: boolean) => void;
+    setFocus: UseFormSetFocus<TypeForm>;
+    handleSubmit: UseFormHandleSubmit<TypeForm>;
+  };
+};
+
+const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
+  const { rgb, isHome, isModal, isTv, isSearching, errors } = props;
+  const { setFocus, handleSubmit, onSubmit, register, toggleIsSearching } =
+    funcs;
 
   return (
     <>
@@ -114,7 +90,7 @@ const Header = () => {
                 className="absolute left-3 m-0 menu w-5 p-0 text-stone-400 z-20"
                 onClick={() => {
                   if (!isSearching) setFocus("term");
-                  setIsSearching(!isSearching);
+                  toggleIsSearching(!isSearching);
                 }}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512"
@@ -154,4 +130,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderPresenter;

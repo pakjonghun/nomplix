@@ -19,8 +19,6 @@ type SliderPresenterProps = {
 };
 
 const SliderPresenter: FC<SliderPresenterProps> = ({ funcs, props, data }) => {
-  const gridCols = `grid-cols-${props.itemCount}`;
-
   return (
     <section className="relative w-full h-fit -top-64 sm:-top-52 lg:-top-32 bg-black">
       <AnimatePresence
