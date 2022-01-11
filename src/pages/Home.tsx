@@ -3,14 +3,10 @@ import { useQuery } from "react-query";
 import { movieApis } from "../apis";
 import Loading from "../components/Loading";
 import { imageUrlMaker } from "../utilities/utility";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useViewportScroll,
-} from "framer-motion";
+import { motion, AnimatePresence, useViewportScroll } from "framer-motion";
 import { useMatch, useNavigate, useParams } from "react-router-dom";
 import { Item } from "framer-motion/types/components/Reorder/Item";
+import Stars from "../components/Stars";
 
 export type TypeMovie = {
   adult: boolean;
@@ -40,7 +36,7 @@ type TypeData = {
   results: TypeMovie[];
 };
 
-const pagingNumger = 6;
+const pagingNumger = 5;
 
 const pagingAni = {
   init: (d: number) => ({
@@ -129,7 +125,6 @@ const Home = () => {
   };
 
   const clickedMovie = isModal && data?.results.find((m) => m.id === +id!);
-  console.log(clickedMovie);
 
   if (isLoading) {
     return <Loading />;
@@ -172,7 +167,7 @@ const Home = () => {
               initial="init"
               animate="show"
               exit="exit"
-              className="absolute top-0 grid grid-cols-6 gap-1 w-full px-5 mb-3"
+              className="absolute top-0 grid grid-cols-5 gap-1 w-full px-5 mb-3"
             >
               {offset(index).map((item) => {
                 return (
@@ -191,11 +186,15 @@ const Home = () => {
                       src={imageUrlMaker(item.backdrop_path, "w500")}
                     />
                     <motion.div
-                      className="absolute w-full origin-top opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-250 text-center"
+                      className="absolute -bottom-5 w-full origin-top group-hover:opacity-100  transition-opacity duration-500 delay-250 text-center"
                       initial="normal"
                       animate="hover"
                     >
-                      <h4 className=" text-xs">{item.title}</h4>
+                      <h4 className="text-xs font-bold  ">
+                        {item.title.length > 12
+                          ? item.title.substring(0, 12) + "..."
+                          : item.title}
+                      </h4>
                     </motion.div>
                   </motion.div>
                 );
@@ -219,7 +218,7 @@ const Home = () => {
                 style={{ top: scrollY.get() + 50 }}
                 id="modal"
                 layoutId={id}
-                className="absolute w-7/12 h-screen2/3 bg-gray-800 rounded-md shadow-lg"
+                className="absolute w-7/12 h-screen2/3 pb-4 bg-gray-800 rounded-md shadow-lg overflow-y-scroll "
               >
                 {clickedMovie && (
                   <>
@@ -229,16 +228,22 @@ const Home = () => {
                         backgroundImage: `linear-gradient(rgba(0,0,0,.3),transparent)
                         ,url(${imageUrlMaker(clickedMovie.backdrop_path)})`,
                       }}
-                    ></div>
+                    />
                     <h2 className="relative -top-1/4 left-5 text-2xl font-bold">
                       {clickedMovie.original_title}
                     </h2>
-                    <div className="">
-                      <span>{clickedMovie.release_date}</span>
-                      <span>{clickedMovie.vote_average}</span>
-                      <span>{clickedMovie.original_language}</span>
+                    <div className="relative -top-20 px-5">
+                      <div className="flex mb-5">
+                        <span className="mr-5">
+                          {clickedMovie.release_date}
+                        </span>
+                        <span className="mr-5">
+                          {clickedMovie.original_language}
+                        </span>
+                      </div>
+                      <Stars vote={clickedMovie.vote_average} />
+                      <p className="mt-5">{clickedMovie.overview}</p>
                     </div>
-                    <p>{clickedMovie.overview}</p>
                   </>
                 )}
               </motion.div>

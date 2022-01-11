@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 .menu {
-  @apply flex items-center justify-center mx-7 px-3 h-full cursor-pointer select-none;
+  @apply flex items-center justify-center mx-4 px-2 h-full cursor-pointer select-none;
 }
 
 .header {
