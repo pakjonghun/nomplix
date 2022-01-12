@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { movieApis } from "../store/apis/apis";
-import { imageUrlMaker } from "../utilities/utility";
+import { imageUrlMaker, sentenseShortter } from "../utilities/utility";
 import { motion } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Detail from "../components/Detail";
 import Slider from "../components/Slider";
 import { TypeData, TypeMovie } from "../utilities/types";
@@ -24,6 +24,7 @@ const Home = () => {
     if (data?.results) dispatch(getNowPlaying(data.results));
   }, [data, dispatch]);
 
+  const navigate = useNavigate();
   const { id } = useParams();
   const clickedMovie = data?.results && data.results.find((m) => m.id === +id!);
   const booleans = { isLoading, isError, isSuccess: data?.isSuccess };
@@ -42,23 +43,31 @@ const Home = () => {
             className="flex flex-col justify-center h-full w-full mt-20 p-10 bg-cover bg-no-repeat bg-black transition-all duration 100"
           >
             <div className="-mt-52 lg:-mt-32">
-              <h1 className=" text-2xl font-bold mb-7">
+              <h1 className=" text-2xl font-bold mt-7 mb-5">
                 {data?.results[0].original_title}
               </h1>
-              <p className="w-2/3 text-xl">
+              <p className="w-4/5 mb-3 text-xl">
                 {data?.results[0].overview &&
-                data?.results[0].overview.length > 80
-                  ? data?.results[0].overview
-                  : data?.results[0].overview.substring(0, 80)}
+                  sentenseShortter(data.results[0].overview, 470)}
               </p>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 1 }}
+                className="text-yellow-500/90 font-bold"
+                onClick={() => navigate(`/movies/${data.results[0].id}`)}
+              >
+                More
+              </motion.button>
             </div>
           </motion.section>
 
           <section
             style={{ paddingBottom: "20%" }}
-            className="relative -top-52 lg:-top-32 flex items-center justify-between w-full h-20 px-1 "
+            className="relative -top-44 lg:-top-32 w-full px-1 "
           >
-            {<Slider data={data} itemCount={5} />}
+            <div className="relative flex items-center justify-between w-full h-20 px-1">
+              {<Slider data={data} itemCount={5} />}
+            </div>
           </section>
 
           <Modal childId="modal" backAdress="/" forwordAdress="/movies/:id">

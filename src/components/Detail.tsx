@@ -31,14 +31,12 @@ const Detail: FC<{ id: string; clickedMovie: TypeMovie }> = ({
     >
       {clickedMovie && (
         <>
-          <div
-            className="w-full h-2/4 bg-no-repeat bg-cover bg-top"
-            style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,.3),transparent)
-          ,url(${imageUrlMaker(clickedMovie.backdrop_path)})`,
-            }}
+          <img
+            className="w-full"
+            src={imageUrlMaker(clickedMovie.backdrop_path)}
+            alt={clickedMovie.title}
           />
-          <h2 className="relative -top-1/4 left-5 text-2xl font-bold">
+          <h2 className="relative left-5 text-2xl font-bold">
             {clickedMovie.original_title}
           </h2>
           <div className="relative -top-18 px-5">
