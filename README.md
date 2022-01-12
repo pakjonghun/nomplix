@@ -36,3 +36,5 @@
 - position absolute : left 0 right 0 margin 0 auto
 
 6. tailwind 의 한계는 js 와 다이나믹하게 연동을 못한다는 점이다. : styled-component와 섞을 필요가 있다.
+
+7. 슬라이더는 별도로 리덕스 저장소에 데이터를 넣고, 슬라이더 인덱스를 redux-persist 같은 툴로 계속 기억 해야 함.
