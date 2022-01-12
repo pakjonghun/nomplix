@@ -14,8 +14,8 @@ type HeaderPresenterProps = {
   props: {
     rgb: MotionValue<string>;
     isHome: PathMatch<string> | null;
-    isModal: PathMatch<string> | null;
-    isTv: PathMatch<string> | null;
+    isModal: boolean;
+    isTop: PathMatch<string> | null;
     isSearching: boolean;
     errors: {
       term?: FieldError | undefined;
@@ -31,7 +31,7 @@ type HeaderPresenterProps = {
 };
 
 const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
-  const { rgb, isHome, isModal, isTv, isSearching, errors } = props;
+  const { rgb, isHome, isModal, isTop, isSearching, errors } = props;
   const { setFocus, handleSubmit, onSubmit, register, toggleIsSearching } =
     funcs;
 
@@ -69,10 +69,10 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
             )}
           </li>
           <li className="relative flex justify-center">
-            <Link className="menu" to="/tv">
-              TV
+            <Link className="menu" to="/movies/top">
+              Top
             </Link>
-            {isTv && (
+            {isTop && (
               <motion.div
                 layoutId="menu"
                 className="absolute bottom-1 sm:-bottom-1 w-1 h-1 sm:w-2 sm:h-2  bg-red-500 rounded-full"

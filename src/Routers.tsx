@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
-import TV from "./pages/TV";
+import TV from "./pages/Top";
 
 const Routers = () => {
   return (
@@ -10,9 +10,11 @@ const Routers = () => {
       <Routes>
         <Route path="/" element={<Header />}>
           <Route path="" element={<Home />} />
-          <Route path="movies/:id" element={<Home />} />
-          <Route path="movies" element={<Search />} />
-          <Route path="tv" element={<TV />} />
+          <Route path="movies">
+            <Route path="" element={<Search />} />
+            <Route path=":id" element={<Home />} />
+            <Route path="top" element={<TV />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
