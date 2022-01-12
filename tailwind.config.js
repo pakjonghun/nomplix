@@ -11,6 +11,8 @@ module.exports = {
         double: "200vh",
         half: "50vh",
         "screen2/3": "70vh",
+        "screen3/5": "80vh",
+        "screen6/7": "90vh",
       },
     },
   },

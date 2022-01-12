@@ -35,7 +35,7 @@ const SliderPresenter: FC<SliderPresenterProps> = ({ funcs, props, data }) => {
         key={getId()}
         onClick={() => funcs.onClickController(-1)}
         style={{ top: "50%", transform: "translateY(-50%)" }}
-        className="absolute left-0 pl-1 text-white cursor-pointer text-2xl sm:text-3xl lg:text-4xl z-10"
+        className="absolute left-0 pl-1 text-white cursor-pointer text-2xl sm:text-3xl lg:text-4xl font-extrabold z-10"
       >
         {"〈"}
       </div>
@@ -89,7 +89,7 @@ const SliderPresenter: FC<SliderPresenterProps> = ({ funcs, props, data }) => {
         key={getId()}
         onClick={() => funcs.onClickController(1)}
         style={{ top: "50%", transform: "translateY(-50%)" }}
-        className="absolute right-0 pr-1 text-white cursor-pointer text-2xl sm:text-3xl lg:text-4xl z-10"
+        className="absolute right-0 pr-1 text-white cursor-pointer text-2xl sm:text-3xl lg:text-4xl font-extrabold z-10"
       >
         {"〉"}
       </div>

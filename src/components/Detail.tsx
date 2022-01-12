@@ -24,10 +24,12 @@ const Detail: FC<{ id: string; clickedMovie: TypeMovie }> = ({
 
   return (
     <motion.div
-      style={{ top: scrollY.get() + 50 }}
+      style={{
+        top: scrollY.get() + 50,
+      }}
       id="modal"
       layoutId={id}
-      className="absolute w-9/12 h-screen2/3 pb-4 bg-gray-800 rounded-md shadow-lg overflow-y-scroll "
+      className="absolute left-0 right-0 my-0 mx-auto w-9/12 h-screen2/3 pb-4 bg-gray-800 rounded-md shadow-lg overflow-y-scroll "
     >
       {clickedMovie && (
         <>
@@ -36,7 +38,7 @@ const Detail: FC<{ id: string; clickedMovie: TypeMovie }> = ({
             src={imageUrlMaker(clickedMovie.backdrop_path)}
             alt={clickedMovie.title}
           />
-          <h2 className="relative left-5 text-2xl font-bold">
+          <h2 className="relative left-5 font-bold">
             {clickedMovie.original_title}
           </h2>
           <div className="relative -top-18 px-5">

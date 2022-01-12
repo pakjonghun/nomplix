@@ -36,7 +36,7 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
     funcs;
 
   return (
-    <>
+    <div className="md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
       <motion.header
         style={{ backgroundColor: rgb }}
         className="fixed top-0 w-full header"
@@ -49,7 +49,7 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
                 initial={"initial"}
                 animate={"animate"}
                 whileHover={"hover"}
-                className="menu h-12 py-3 m-0"
+                className="menu h-12 py-3 m-0 md:h-14 lg:h-16 2xl:h-20"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 1024 276.742"
               >
@@ -128,7 +128,7 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
         </ul>
       </motion.header>
       <Outlet />
-    </>
+    </div>
   );
 };
 
