@@ -12,4 +12,8 @@
   @apply py-1 px-3 pl-10 bg-stone-300/20 border-2 border-stone-500 focus:ring-1 focus:ring-stone-200 focus:outline-none;
 }
 
+.basicBlackFullScreen {
+  @apply flex items-center justify-center h-screen w-screen bg-black text-red-500 text-3xl;
+}
+
 @tailwind utilities;

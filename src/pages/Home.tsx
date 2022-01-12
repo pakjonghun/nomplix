@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { movieApis } from "../apis";
+import { movieApis } from "../state/apis/apis";
 import Loading from "../components/Loading";
 import { imageUrlMaker } from "../utilities/utility";
 import { motion } from "framer-motion";
@@ -9,9 +9,10 @@ import Detail from "../components/Detail";
 import Slider from "../components/Slider";
 import { TypeData } from "../utilities/types";
 import Modal from "../components/Modal";
+import ClientStatusWrapper from "../Hooks/ClientStatusWrapper";
 
 const Home = () => {
-  const { isLoading, data } = useQuery<TypeData>(
+  const { isLoading, isError, error, data } = useQuery<TypeData>(
     ["movie", "nowplay"],
     movieApis.nowPlaying
   );
@@ -19,10 +20,11 @@ const Home = () => {
   const { id } = useParams();
   const clickedMovie = data?.results.find((m) => m.id === +id!);
 
-  if (isLoading) {
-    return <Loading />;
-  } else {
-    return (
+  const booleans = { isLoading, isError, isSuccess: data?.isSuccess };
+  const rest = { error, statusMessage: data?.status_message };
+
+  return (
+    <ClientStatusWrapper booleans={booleans} rest={rest}>
       <div className="flex flex-col items-center justify-center h-screen w-full bg-black text-white">
         <motion.section
           style={{
@@ -50,8 +52,8 @@ const Home = () => {
           {id && clickedMovie && <Detail id={id} clickedMovie={clickedMovie} />}
         </Modal>
       </div>
-    );
-  }
+    </ClientStatusWrapper>
+  );
 };
 
 export default Home;

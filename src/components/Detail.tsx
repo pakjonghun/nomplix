@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { useQuery } from "react-query";
-import { movieApis } from "../apis";
+import { movieApis } from "../state/apis/apis";
 import { motion, useViewportScroll } from "framer-motion";
 import { imageUrlMaker } from "../utilities/utility";
 import Stars from "./Stars";

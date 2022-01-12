@@ -16,6 +16,8 @@ export type TypeMovie = {
 };
 
 export type TypeData = {
+  isSuccess?: boolean;
+  status_message?: string;
   dates: {
     maximum: string;
     minimum: string;
