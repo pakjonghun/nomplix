@@ -17,41 +17,44 @@ const Home = () => {
   );
 
   const { id } = useParams();
-  const clickedMovie = data?.results.find((m) => m.id === +id!);
-
+  const clickedMovie = data?.results && data.results.find((m) => m.id === +id!);
   const booleans = { isLoading, isError, isSuccess: data?.isSuccess };
   const rest = { error, statusMessage: data?.status_message };
 
   return (
     <ClientStatusWrapper booleans={booleans} rest={rest}>
-      <div className="flex flex-col items-center justify-center h-screen w-full bg-black text-white">
-        <motion.section
-          style={{
-            backgroundImage: `linear-gradient(rgba(0,0,0,0),rgba(0, 0, 0, 1)), url(
-              ${imageUrlMaker(data?.results[0].backdrop_path || "", "w500")}
+      {data?.results && (
+        <div className="flex flex-col items-center justify-center h-screen w-full bg-black text-white">
+          <motion.section
+            style={{
+              backgroundImage: `linear-gradient(rgba(0,0,0,0),rgba(0, 0, 0, 1)), url(
+              ${imageUrlMaker(data.results[0]?.backdrop_path || "", "w500")}
             )`,
-          }}
-          className="flex flex-col justify-center h-full w-full mt-20 p-10 bg-cover bg-no-repeat bg-black transition-all duration 100"
-        >
-          <div className="-mt-64 sm:-mt-52 lg:-mt-32">
-            <h1 className=" text-2xl font-bold mb-7">
-              {data?.results[0].original_title}
-            </h1>
-            <p className="w-1/2 text-xl">
-              {data?.results[0].overview &&
-              data?.results[0].overview.length > 100
-                ? data?.results[0].overview
-                : data?.results[0].overview.substring(0, 100)}
-            </p>
-          </div>
-        </motion.section>
+            }}
+            className="flex flex-col justify-center h-full w-full mt-20 p-10 bg-cover bg-no-repeat bg-black transition-all duration 100"
+          >
+            <div className="-mt-64 sm:-mt-52 lg:-mt-32">
+              <h1 className=" text-2xl font-bold mb-7">
+                {data?.results[0].original_title}
+              </h1>
+              <p className="w-1/2 text-xl">
+                {data?.results[0].overview &&
+                data?.results[0].overview.length > 100
+                  ? data?.results[0].overview
+                  : data?.results[0].overview.substring(0, 100)}
+              </p>
+            </div>
+          </motion.section>
 
-        {data && <Slider data={data} itemCount={5} />}
+          {<Slider data={data} itemCount={5} />}
 
-        <Modal childId="modal" backAdress="/" forwordAdress="/movies/:id">
-          {id && clickedMovie && <Detail id={id} clickedMovie={clickedMovie} />}
-        </Modal>
-      </div>
+          <Modal childId="modal" backAdress="/" forwordAdress="/movies/:id">
+            {id && clickedMovie && (
+              <Detail id={id} clickedMovie={clickedMovie} />
+            )}
+          </Modal>
+        </div>
+      )}
     </ClientStatusWrapper>
   );
 };

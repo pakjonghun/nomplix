@@ -13,7 +13,7 @@
 }
 
 .basicBlackFullScreen {
-  @apply flex items-center justify-center h-screen w-screen bg-black text-red-500 text-3xl;
+  @apply flex items-center justify-center h-screen w-screen bg-black text-red-500 text-3xl font-bold;
 }
 
 @tailwind utilities;

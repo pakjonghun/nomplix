@@ -1,4 +1,5 @@
 import { FC } from "react";
+import FullScreen from "./FullScreen";
 import Loading from "./Loading";
 
 type TypeUseClientStatusWrapper = {
@@ -22,12 +23,16 @@ const ClientStatusWrapper: FC<TypeUseClientStatusWrapper> = ({
     case booleans.isLoading:
       return <Loading />;
 
-    case booleans?.isError && rest?.error:
+    case booleans?.isError && !!rest?.error:
       const e = rest.error as Error;
-      return <div className="basicBlackFullScreen">{e.message}</div>;
+      return (
+        <div className="basicBlackFullScreen">
+          <h1 className="w-2/3">{e.message}</h1>
+        </div>
+      );
 
-    case booleans?.isSuccess && !!rest.statusMessage:
-      return <div>{rest.statusMessage}</div>;
+    case booleans?.isSuccess === false:
+      return <FullScreen content={rest.statusMessage || "Unknown Error"} />;
 
     default:
       return <>{children}</>;
