@@ -41,7 +41,7 @@ const Home = () => {
             }}
             className="flex flex-col justify-center h-full w-full mt-20 p-10 bg-cover bg-no-repeat bg-black transition-all duration 100"
           >
-            <div className="-mt-64 sm:-mt-52 lg:-mt-32">
+            <div className="-mt-52 lg:-mt-32">
               <h1 className=" text-2xl font-bold mb-7">
                 {data?.results[0].original_title}
               </h1>
@@ -54,7 +54,12 @@ const Home = () => {
             </div>
           </motion.section>
 
-          {<Slider data={data} itemCount={5} />}
+          <section
+            style={{ paddingBottom: "20%" }}
+            className="relative -top-52 lg:-top-32 flex items-center justify-between w-full h-20 px-1 "
+          >
+            {<Slider data={data} itemCount={5} />}
+          </section>
 
           <Modal childId="modal" backAdress="/" forwordAdress="/movies/:id">
             {id && clickedMovie && (

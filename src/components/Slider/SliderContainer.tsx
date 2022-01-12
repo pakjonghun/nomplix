@@ -30,12 +30,12 @@ const SliderContainer: FC<SliderContainerProps> = ({ data, itemCount }) => {
 
   const onPlusClick = (totalPage: number) => {
     setDirection(1);
-    setIndex(index === totalPage ? 0 : index + 1);
+    setIndex(index === totalPage - 1 ? 0 : index + 1);
   };
 
   const onMinusClick = (totalPage: number) => {
     setDirection(-1);
-    setIndex(!index ? totalPage : index - 1);
+    setIndex(!index ? totalPage - 1 : index - 1);
   };
 
   const onClickController = (direction: number) => {
@@ -43,7 +43,7 @@ const SliderContainer: FC<SliderContainerProps> = ({ data, itemCount }) => {
     if (!data?.results) return;
     if (!data.results.length) return;
     const totalPage = Math.floor(data.results.length / itemCount);
-
+    console.log("total", totalPage);
     setIsSliding(true);
 
     switch (direction) {
