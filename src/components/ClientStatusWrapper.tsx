@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Loading from "../components/Loading";
+import Loading from "./Loading";
 
 type TypeUseClientStatusWrapper = {
   booleans: {

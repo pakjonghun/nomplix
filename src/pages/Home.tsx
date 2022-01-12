@@ -1,7 +1,6 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { movieApis } from "../state/apis/apis";
-import Loading from "../components/Loading";
 import { imageUrlMaker } from "../utilities/utility";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
@@ -9,7 +8,7 @@ import Detail from "../components/Detail";
 import Slider from "../components/Slider";
 import { TypeData } from "../utilities/types";
 import Modal from "../components/Modal";
-import ClientStatusWrapper from "../Hooks/ClientStatusWrapper";
+import ClientStatusWrapper from "../components/ClientStatusWrapper";
 
 const Home = () => {
   const { isLoading, isError, error, data } = useQuery<TypeData>(
@@ -46,6 +45,7 @@ const Home = () => {
             </p>
           </div>
         </motion.section>
+
         {data && <Slider data={data} itemCount={5} />}
 
         <Modal childId="modal" backAdress="/" forwordAdress="/movies/:id">
