@@ -14,8 +14,8 @@ export const movieApis = {
 
   detail: (id: string) =>
     getData(`${BASIC_URL}/movie/${id}?api_key=${API_KEY}`),
-
-  search: () => getData(`${BASIC_URL}/`),
+  video: (id: string) =>
+    getData(`${BASIC_URL}/movie/${id}/videos?api_key=${API_KEY}`),
+  search: (term: string) =>
+    getData(`${BASIC_URL}/search/movie?api_key=${API_KEY}&query=${term}`),
 };
-
-// search/multi?api_key=<<api_key>>&language=en-US&page=1&include_adult=false

@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 const Loading = () => {
   return (
-    <div className="flex flex-col justify-center items-center h-screen w-screen bg-black">
+    <div className="flex flex-col justify-center items-center h-full w-full bg-black">
       <h1 className="mb-10 text-red-500 text-5xl font-extrabold">
         Now Loading...
       </h1>

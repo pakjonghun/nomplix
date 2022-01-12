@@ -3,10 +3,7 @@ import { useMatch, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useTransform, useViewportScroll } from "framer-motion";
 import HeaderPresenter from "./HeaderPresenter";
-
-export type TypeForm = {
-  term: string;
-};
+import { TypeForm } from "../../utilities/types";
 
 const HeaderContainer = () => {
   const [isSearching, setIsSearching] = useState(false);

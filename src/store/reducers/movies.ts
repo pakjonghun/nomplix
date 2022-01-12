@@ -1,7 +1,5 @@
-import { movieApis } from "../apis/apis";
-import { TypeData, TypeMovie } from "./../../utilities/types";
-import { useQuery } from "react-query";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { TypeMovie } from "../../utilities/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type TypeInitialMovie = {
   data: TypeMovie[];
@@ -28,18 +26,16 @@ const initialState: TypeInitialMovie = {
   data: [initialData],
 };
 
-const getMovieAsync = createAsyncThunk("/movie/now_playing", async () => {
-  const { isLoading, data } = useQuery<TypeData>(
-    ["movie", "nowplay"],
-    movieApis.nowPlaying
-  );
-  return { isLoading, data };
-});
-
 const movies = createSlice({
   name: "movies",
   initialState,
   reducers: {
-    getMovie: () => {},
+    getNowPlaying: (state, action: PayloadAction<TypeMovie[]>) => {
+      state.data = action.payload;
+    },
   },
 });
+
+export const { getNowPlaying } = movies.actions;
+
+export default movies.reducer;

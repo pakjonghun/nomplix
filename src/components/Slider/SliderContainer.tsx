@@ -1,10 +1,10 @@
 import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TypeData } from "../../utilities/types";
+import { TypeData, TypeMovie } from "../../utilities/types";
 import SliderPresenter from "./SliderPresent";
 
 type SliderContainerProps = {
-  data: TypeData;
+  data: TypeData<TypeMovie>;
   itemCount: number;
 };
 

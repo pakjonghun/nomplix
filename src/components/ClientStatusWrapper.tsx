@@ -1,4 +1,7 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
+import { useAppDispatch } from "../hooks/store";
+import { getNowPlaying } from "../store/reducers/movies";
+import { TypeMovie } from "../utilities/types";
 import FullScreen from "./FullScreen";
 import Loading from "./Loading";
 
