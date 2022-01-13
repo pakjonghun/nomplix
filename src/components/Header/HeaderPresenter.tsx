@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Link, Outlet, PathMatch } from "react-router-dom";
 import { AnimatePresence, motion, MotionValue } from "framer-motion";
 import { logoAni, searchIconAni, searchInputAni } from "./HeaderAnimation";
@@ -9,6 +9,7 @@ import {
   UseFormSetFocus,
 } from "react-hook-form";
 import { TypeForm } from "../../utilities/types";
+import { getId } from "../../utilities/utility";
 
 type HeaderPresenterProps = {
   props: {
@@ -34,6 +35,37 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
   const { rgb, isHome, isModal, isTop, isSearching, errors } = props;
   const { setFocus, handleSubmit, onSubmit, register, toggleIsSearching } =
     funcs;
+
+  const [innerW, setInnerW] = useState(window.innerWidth);
+  const [isLg, setIsLg] = useState(false);
+  const [isXl, setIsXl] = useState(false);
+
+  useEffect(() => {
+    const checkW = (w: number) => {
+      switch (true) {
+        case w < 1024:
+          if (!isLg && !isXl) return;
+          if (!isLg) setIsLg(false);
+          if (!isXl) setIsXl(false);
+          return;
+        case w >= 1024 && w < 1530:
+          if (isLg && !isXl) return;
+          if (!isXl) setIsXl(false);
+          setIsLg(true);
+          return;
+        case w >= 1530:
+          if (isXl && !isLg) return;
+          setIsLg(false);
+          setIsXl(true);
+          return;
+        default:
+          throw new Error("InputAnimation error");
+      }
+    };
+    window.addEventListener("resize", () => checkW(window.innerWidth));
+    return () =>
+      window.removeEventListener("resize", () => checkW(window.innerWidth));
+  }, [isLg, isXl]);
 
   return (
     <div className="md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
@@ -81,15 +113,15 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
           </li>
         </ul>
         <ul>
-          <li className=" relative flex flex-col justify-center">
-            <AnimatePresence initial={false}>
+          <AnimatePresence>
+            <li className=" relative flex flex-col justify-center w-full ">
               <motion.svg
-                key="unique"
-                variants={searchIconAni}
+                key={getId()}
                 initial="initial"
-                animate="animate"
-                custom={isSearching}
-                className="absolute left-3 m-0 menu w-5 p-0 text-stone-400 z-20"
+                animate={"animate"}
+                variants={searchIconAni}
+                custom={{ isSearching, isLg, isXl }}
+                className={`absolute w-5 left-0 md:w-6 lg:w-7 xl:w-8 2xl:w-9 m-0 p-0 menu text-stone-400 z-20`}
                 onClick={() => {
                   if (!isSearching) setFocus("term");
                   toggleIsSearching(!isSearching);
@@ -100,7 +132,7 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
                 <motion.path
                   fill="currentColor"
                   d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
-                ></motion.path>
+                />
               </motion.svg>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <motion.input
@@ -111,20 +143,20 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
                   variants={searchInputAni}
                   initial="initial"
                   animate="animate"
-                  className="searchInput z-10 origin-left"
+                  className="searchInput z-10 origin-right"
                   placeholder="Search for"
                 />
               </form>
               {errors?.term?.message && (
                 <p
-                  key="unique2"
+                  key={getId()}
                   className="absolute -bottom-5 ml-1 text-red-500 text-xs"
                 >
                   {errors.term.message}
                 </p>
               )}
-            </AnimatePresence>
-          </li>
+            </li>
+          </AnimatePresence>
         </ul>
       </motion.header>
       <Outlet />

@@ -9,7 +9,7 @@
 }
 
 .searchInput {
-  @apply py-1 px-3 pl-10 bg-stone-300/20 border-2 border-stone-500 focus:ring-1 focus:ring-stone-200 focus:outline-none;
+  @apply py-2 xl:py-3  2xl:py-4 px-3 lg:px-14 pl-10  bg-stone-300/20 border-2 border-stone-500 focus:ring-1 focus:ring-stone-200 focus:outline-none;
 }
 
 .basicBlackFullScreen {
