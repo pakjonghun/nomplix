@@ -4,46 +4,31 @@ export const logoAni = {
   hover: { fillOpacity: [1, 0.5, 1] },
 };
 
-type TypeSearchAni = {
-  isSearching: boolean;
-  isLg: boolean;
-  isXl: boolean;
-};
-
 export const searchIconAni = {
-  initial: { x: 200 },
-  animate: ({ isLg, isSearching, isXl }: TypeSearchAni) => {
-    switch (true) {
-      case !!isLg && !isXl:
-        return {
-          x: isSearching ? 10 : 300,
-          transition: {
-            type: "linear",
-            duration: 0.2,
-          },
-        };
-      case !!isXl && !isLg:
-        return {
-          x: isSearching ? 11 : 350,
-          transition: {
-            type: "linear",
-            duration: 0.2,
-          },
-        };
-
-      case !isXl && !isLg:
-        return {
-          x: isSearching ? 12 : 200,
-          transition: {
-            type: "linear",
-            duration: 0.2,
-          },
-        };
-
-      default:
-        throw new Error("input animation error");
-    }
-  },
+  inormal: (isSearching: boolean) => ({ x: isSearching ? 200 : 10 }),
+  normal: (isSearching: boolean) => ({
+    x: isSearching ? 10 : 200,
+    transition: {
+      type: "linear",
+      duration: 0.2,
+    },
+  }),
+  ilg: (isSearching: boolean) => ({ x: isSearching ? 300 : 11 }),
+  lg: (isSearching: boolean) => ({
+    x: isSearching ? 11 : 300,
+    transition: {
+      type: "linear",
+      duration: 0.2,
+    },
+  }),
+  ixl: (isSearching: boolean) => ({ x: isSearching ? 350 : 12 }),
+  xl: (isSearching: boolean) => ({
+    x: isSearching ? 12 : 350,
+    transition: {
+      type: "linear",
+      duration: 0.2,
+    },
+  }),
 };
 
 export const searchInputAni = {

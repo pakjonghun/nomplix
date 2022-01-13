@@ -36,7 +36,6 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
   const { setFocus, handleSubmit, onSubmit, register, toggleIsSearching } =
     funcs;
 
-  const [innerW, setInnerW] = useState(window.innerWidth);
   const [isLg, setIsLg] = useState(false);
   const [isXl, setIsXl] = useState(false);
 
@@ -44,17 +43,17 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
     const checkW = (w: number) => {
       switch (true) {
         case w < 1024:
-          if (!isLg && !isXl) return;
+          // if (!isLg && !isXl) return;
           if (!isLg) setIsLg(false);
           if (!isXl) setIsXl(false);
           return;
-        case w >= 1024 && w < 1530:
-          if (isLg && !isXl) return;
+        case w >= 1024 && w < 1536:
+          // if (isLg && !isXl) return;
           if (!isXl) setIsXl(false);
           setIsLg(true);
           return;
-        case w >= 1530:
-          if (isXl && !isLg) return;
+        case w >= 1536:
+          // if (isXl && !isLg) return;
           setIsLg(false);
           setIsXl(true);
           return;
@@ -66,6 +65,19 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
     return () =>
       window.removeEventListener("resize", () => checkW(window.innerWidth));
   }, [isLg, isXl]);
+
+  const getSearchAni = () => {
+    switch (true) {
+      case !isLg && !isXl:
+        return "normal";
+      case !isLg && isXl:
+        return "xl";
+      case isLg && !isXl:
+        return "lg";
+      default:
+        throw new Error("resize error");
+    }
+  };
 
   return (
     <div className="md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
@@ -113,14 +125,14 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
           </li>
         </ul>
         <ul>
-          <AnimatePresence>
-            <li className=" relative flex flex-col justify-center w-full ">
+          <li className=" relative flex flex-col justify-center w-full ">
+            <AnimatePresence initial={false} custom={isSearching}>
               <motion.svg
                 key={getId()}
-                initial="initial"
-                animate={"animate"}
+                initial={"i" + getSearchAni()}
+                animate={getSearchAni()}
                 variants={searchIconAni}
-                custom={{ isSearching, isLg, isXl }}
+                custom={isSearching}
                 className={`absolute w-5 left-0 md:w-6 lg:w-7 xl:w-8 2xl:w-9 m-0 p-0 menu text-stone-400 z-20`}
                 onClick={() => {
                   if (!isSearching) setFocus("term");
@@ -155,8 +167,8 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
                   {errors.term.message}
                 </p>
               )}
-            </li>
-          </AnimatePresence>
+            </AnimatePresence>
+          </li>
         </ul>
       </motion.header>
       <Outlet />
