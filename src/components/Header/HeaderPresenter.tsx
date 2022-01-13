@@ -108,7 +108,7 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
           </li>
           <li className="relative flex justify-center">
             <Link className="menu" to="/">
-              Home
+              Movie
             </Link>
             {(isHome || isModal) && (
               <motion.div
@@ -118,8 +118,8 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
             )}
           </li>
           <li className="relative flex justify-center">
-            <Link className="menu" to="/movies/top">
-              Top
+            <Link className="menu" to="/tv">
+              TV
             </Link>
             {isTop && (
               <motion.div

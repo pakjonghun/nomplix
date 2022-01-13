@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
-import TV from "./pages/Top";
+import TV from "./pages/TV";
 
 const Routers = () => {
   return (
@@ -14,8 +14,8 @@ const Routers = () => {
             <Route path="" element={<Search />} />
             <Route path="toprated/:id" element={<Home />} />
             <Route path="nowplaying/:id" element={<Home />} />
-            <Route path="top" element={<TV />} />
           </Route>
+          <Route path="tv" element={<TV />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -21,3 +21,13 @@ export const movieApis = {
   topRated: () => getData(`${BASIC_URL}/movie/top_rated?api_key=${API_KEY}`),
   popular: () => getData(`${BASIC_URL}/movie/popular?api_key=${API_KEY}`),
 };
+
+export const tvApis = {
+  onAir: () => getData(`${BASIC_URL}/tv/on_the_air?api_key=${API_KEY}`),
+  popular: () => getData(`${BASIC_URL}/tv/popular?api_key=${API_KEY}`),
+  search: (term: string) =>
+    getData(`${BASIC_URL}/search/tv?api_key=${API_KEY}&query=${term}`),
+  detail: (id: string) => getData(`${BASIC_URL}/tv/${id}?api_key=${API_KEY}`),
+  video: (id: string) =>
+    getData(`${BASIC_URL}/tv/${id}/videos?api_key=${API_KEY}`),
+};
