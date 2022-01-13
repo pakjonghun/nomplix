@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { movieApis } from "../store/apis/apis";
 import { imageUrlMaker, sentenseShortter } from "../utilities/utility";
 import { motion } from "framer-motion";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Detail from "../components/Detail";
 import Slider from "../components/Slider";
 import { TypeData, TypeMovie } from "../utilities/types";
@@ -11,7 +11,6 @@ import Modal from "../components/Modal";
 import ClientStatusWrapper from "../components/ClientStatusWrapper";
 import { useAppDispatch } from "../hooks/store";
 import { getNowPlaying } from "../store/reducers/movies";
-import Loading from "../components/Loading";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -30,8 +29,39 @@ const Home = () => {
   }, [data, dispatch]);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const clickedQuery = () => {
+    const regExp = /^(?:\/movies\/)([a-zA-Z]+)\/[0-9a-zA-Z]+/;
+    const result = location.pathname.match(regExp);
+    if (result?.length !== 2) return "";
+    return result[1];
+  };
+
+  const getCurMovie = (queryKey: string) => {
+    switch (queryKey) {
+      case "nowplaying":
+        return data ? data : 0;
+      case "toprated":
+        return topQuery.data ? topQuery.data : 0;
+      default:
+        throw new Error("not exist data");
+    }
+  };
+
   const { id } = useParams();
-  const clickedMovie = data?.results && data.results.find((m) => m.id === +id!);
+
+  const clickedMovie = (id: string) => {
+    const key = clickedQuery();
+    if (!key.trim().length) return 0;
+    const data = getCurMovie(key);
+    if (!data) return 0;
+    const result = data.results.find((m) => m.id === +id);
+    if (result) return result;
+    return 0;
+  };
+
+  const curMovie = id && clickedMovie(id);
   const booleans = { isLoading, isError, isSuccess: data?.isSuccess };
   const rest = { error, statusMessage: data?.status_message };
 
@@ -44,7 +74,7 @@ const Home = () => {
               backgroundImage: `linear-gradient(rgba(0,0,0,0),rgba(0, 0, 0, 1)), url(
                   ${imageUrlMaker(data.results[0]?.backdrop_path || "", "w500")}
                 )`,
-              padding: "2%",
+              padding: "4%",
             }}
             className="flex flex-col justify-center w-full h-screen2/3 2xl:h-screen xl:h-screen6/7 lg:h-screen3/5 bg-cover bg-no-repeat transparent transition-all duration 100"
           >
@@ -60,7 +90,9 @@ const Home = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 1 }}
                 className="text-yellow-500/90 font-bold"
-                onClick={() => navigate(`/movies/${data.results[0].id}`)}
+                onClick={() =>
+                  navigate(`/movies/nowplaying/${data.results[0].id}`)
+                }
               >
                 More
               </motion.button>
@@ -72,7 +104,7 @@ const Home = () => {
               style={{ paddingBottom: "20%" }}
               className="relative flex items-center justify-between w-full h-20 px-1"
             >
-              {<Slider data={data} itemCount={5} />}
+              {<Slider data={data} title={"nowplaying"} itemCount={5} />}
             </div>
 
             {!topQuery.isLoading && topQuery.data && (
@@ -80,15 +112,19 @@ const Home = () => {
                 style={{ paddingBottom: "20%" }}
                 className="relative flex items-center justify-between w-full h-20 px-1"
               >
-                {<Slider data={topQuery.data} itemCount={5} />}
+                {
+                  <Slider
+                    data={topQuery.data}
+                    title={"toprated"}
+                    itemCount={5}
+                  />
+                }
               </div>
             )}
           </section>
 
-          <Modal childId="modal" backAdress="/" forwordAdress="/movies/:id">
-            {id && clickedMovie && (
-              <Detail id={id} clickedMovie={clickedMovie} />
-            )}
+          <Modal childId="modal" backAdress="/">
+            {curMovie && <Detail curMovie={curMovie} />}
           </Modal>
         </div>
       )}

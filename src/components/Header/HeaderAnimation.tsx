@@ -34,14 +34,14 @@ export const searchIconAni = {
     },
   }),
   xl: (isSearching: boolean) => ({
-    x: isSearching ? -210 : 0,
+    x: isSearching ? -270 : 0,
     transition: {
       type: "linear",
       duration: 0.2,
     },
   }),
   "2xl": (isSearching: boolean) => ({
-    x: isSearching ? -237 : 0,
+    x: isSearching ? -335 : 0,
     transition: {
       type: "linear",
       duration: 0.2,

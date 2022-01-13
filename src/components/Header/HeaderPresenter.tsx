@@ -42,7 +42,7 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
     function dbounce(cb: Function) {
       return function () {
         if (time) clearTimeout(time);
-        time = setTimeout(cb, 100);
+        time = setTimeout(cb, 3);
       };
     }
 
@@ -136,7 +136,6 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
                 isSearching ? " left-0" : "right-0"
               } w-5 md:w-6 lg:w-7 xl:w-8 2xl:w-9 m-0 p-0 text-stone-400 z-20 cursor-pointer`}
               onClick={() => {
-                console.log(1);
                 if (!isSearching) setFocus("term");
                 toggleIsSearching(!isSearching);
               }}
@@ -149,21 +148,11 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
               />
             </motion.svg>
             <form onSubmit={handleSubmit(onSubmit)} className="bg-red-50">
-              {/* <motion.input
-                  {...register("term", {
-                    required: { value: true, message: "required" },
-                  })}
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: 1 }}
-                  className="searchInput z-10 origin-right bg-red-50 searchInput"
-                  placeholder="Search for"
-                /> */}
               <input
                 {...register("term")}
                 style={{}}
                 type="text"
-                className={` p-1 w-40 pl-7  sm:w-52 sm:py-2 sm:pl-10 md:w-56 md:py-3 md:pl-11 lg:w-64 lg:py-4 lg:pl-12 xl:w-68 xl:py-5 xl:pl-14 2xl:w-72 2xl:py-5 2xl:pl-14 bg-stone-300/20 border-2 border-stone-500 focus:ring-1 focus:ring-stone-200 focus:outline-none absolute to-1/2 right-0  -translate-y-1/2 origin-right transition-all ease-linear duration-200 ${
+                className={` p-1 w-40 pl-7  sm:w-52 sm:py-2 sm:pl-10 md:w-56 md:py-3 md:pl-11 lg:w-64  lg:pl-12 xl:w-80  xl:pl-14 2xl:w-96  2xl:pl-14 bg-stone-300/20 border-2 border-stone-500 focus:ring-1 focus:ring-stone-200 focus:outline-none absolute to-1/2 right-0  -translate-y-1/2 origin-right transition-all ease-linear duration-200 ${
                   isSearching ? " scale-x-1" : "scale-x-0"
                 }`}
               />

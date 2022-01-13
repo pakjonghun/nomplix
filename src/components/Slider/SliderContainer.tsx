@@ -6,9 +6,14 @@ import SliderPresenter from "./SliderPresent";
 type SliderContainerProps = {
   data: TypeData<TypeMovie>;
   itemCount: number;
+  title: string;
 };
 
-const SliderContainer: FC<SliderContainerProps> = ({ data, itemCount }) => {
+const SliderContainer: FC<SliderContainerProps> = ({
+  data,
+  itemCount,
+  title,
+}) => {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isSliding, setIsSliding] = useState(false);
@@ -25,7 +30,7 @@ const SliderContainer: FC<SliderContainerProps> = ({ data, itemCount }) => {
   };
 
   const onItemClick = (id: number) => {
-    navigate(`/movies/${id}`);
+    navigate(`/movies/${title}/${id}`);
   };
 
   const onPlusClick = (totalPage: number) => {
@@ -43,7 +48,6 @@ const SliderContainer: FC<SliderContainerProps> = ({ data, itemCount }) => {
     if (!data?.results) return;
     if (!data.results.length) return;
     const totalPage = Math.floor(data.results.length / itemCount);
-    console.log("total", totalPage);
     setIsSliding(true);
 
     switch (direction) {
@@ -62,7 +66,7 @@ const SliderContainer: FC<SliderContainerProps> = ({ data, itemCount }) => {
     <SliderPresenter
       funcs={{ onExitComplete, onItemClick, onClickController }}
       data={offset(index)}
-      props={{ index, direction, itemCount }}
+      props={{ index, title, direction, itemCount }}
     />
   );
 };

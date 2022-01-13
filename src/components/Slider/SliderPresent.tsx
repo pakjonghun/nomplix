@@ -13,6 +13,7 @@ type SliderPresenterProps = {
     direction: number;
     index: number;
     itemCount: number;
+    title: string;
   };
   data: TypeData[];
 };
@@ -31,6 +32,7 @@ const SliderPresenter: FC<SliderPresenterProps> = ({ funcs, props, data }) => {
       onExitComplete={funcs.onExitComplete}
       custom={props.direction}
     >
+      <h3 className="-mb-5 mx-auto">{props.title.toUpperCase()}</h3>
       <div
         key={getId()}
         onClick={() => funcs.onClickController(-1)}
@@ -71,7 +73,7 @@ const SliderPresenter: FC<SliderPresenterProps> = ({ funcs, props, data }) => {
               />
 
               <motion.div
-                className="absolute -bottom-5 origin-top group-hover:opacity-100  opacity-0 transition-opacity duration-500 delay-250 text-center"
+                className="absolute bottom-2 origin-top group-hover:opacity-100  opacity-0 transition-opacity duration-500 delay-250 text-center"
                 initial="normal"
                 animate="hover"
               >

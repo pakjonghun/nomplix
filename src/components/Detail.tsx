@@ -7,10 +7,9 @@ import Stars from "./Stars";
 import { TypeMovie, TypeMovieDetail, TypeVideoData } from "../utilities/types";
 import Loading from "./Loading";
 
-const Detail: FC<{ id: string; clickedMovie: TypeMovie }> = ({
-  id,
-  clickedMovie,
-}) => {
+const Detail: FC<{ curMovie: TypeMovie }> = ({ curMovie }) => {
+  const id = curMovie.id.toString();
+
   const { isLoading, data } = useQuery<TypeMovieDetail>(
     ["movie", "detail"],
     () => movieApis.detail(id)
@@ -31,15 +30,15 @@ const Detail: FC<{ id: string; clickedMovie: TypeMovie }> = ({
       layoutId={id}
       className="absolute left-0 right-0 my-0 mx-auto w-9/12 h-screen2/3 pb-4 bg-gray-800 rounded-md shadow-lg overflow-y-scroll "
     >
-      {clickedMovie && (
+      {curMovie && (
         <>
           <img
             className="w-full"
-            src={imageUrlMaker(clickedMovie.backdrop_path)}
-            alt={clickedMovie.title}
+            src={imageUrlMaker(curMovie.backdrop_path)}
+            alt={curMovie.title}
           />
           <h2 className="relative left-5 font-bold">
-            {clickedMovie.original_title}
+            {curMovie.original_title}
           </h2>
           <div className="relative -top-18 px-5">
             {data?.genres && (
@@ -48,8 +47,8 @@ const Detail: FC<{ id: string; clickedMovie: TypeMovie }> = ({
           </div>
           <div className="relative -top-18 px-5">
             <div className="flex mb-5">
-              <span className="mr-5">{clickedMovie.release_date}</span>
-              <span className="mr-5">{clickedMovie.original_language}</span>
+              <span className="mr-5">{curMovie.release_date}</span>
+              <span className="mr-5">{curMovie.original_language}</span>
               {!isLoading && data?.homepage && (
                 <a
                   target="_blank"
@@ -61,7 +60,7 @@ const Detail: FC<{ id: string; clickedMovie: TypeMovie }> = ({
               )}
             </div>
 
-            <Stars vote={clickedMovie.vote_average} />
+            <Stars vote={curMovie.vote_average} />
             <div className="mt-5">
               {isVLoading ? (
                 <Loading />
@@ -82,7 +81,7 @@ const Detail: FC<{ id: string; clickedMovie: TypeMovie }> = ({
                 </div>
               )}
             </div>
-            <p className="mt-5">{clickedMovie.overview}</p>
+            <p className="mt-5">{curMovie.overview}</p>
           </div>
         </>
       )}
