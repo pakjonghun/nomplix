@@ -33,14 +33,13 @@ const SliderPresenter: FC<SliderPresenterProps> = ({ funcs, props, data }) => {
       custom={props.direction}
     >
       <h3 className="-mb-5 mx-auto">{props.title.toUpperCase()}</h3>
-      <div
+      <motion.div
         key={getId()}
         onClick={() => funcs.onClickController(-1)}
-        style={{ top: "50%", transform: "translateY(-50%)" }}
-        className="absolute left-0 pl-1 text-white cursor-pointer text-2xl sm:text-3xl lg:text-4xl font-extrabold z-10"
+        className="absolute left-0 pl-1 top-1/2 -translate-y-1/2 text-white cursor-pointer text-2xl sm:text-3xl lg:text-4xl font-extrabold z-10 hover:scale-110 active:scale-100 transition-transform duration-200 ease-linear"
       >
         {"〈"}
-      </div>
+      </motion.div>
       <motion.div
         style={{
           gridTemplateColumns: [...Array(props.itemCount)]
@@ -87,14 +86,13 @@ const SliderPresenter: FC<SliderPresenterProps> = ({ funcs, props, data }) => {
           );
         })}
       </motion.div>
-      <div
+      <motion.div
         key={getId()}
         onClick={() => funcs.onClickController(1)}
-        style={{ top: "50%", transform: "translateY(-50%)" }}
-        className="absolute right-0 pr-1 text-white cursor-pointer text-2xl sm:text-3xl lg:text-4xl font-extrabold z-10"
+        className="absolute top-1/2 -translate-y-1/2 right-0 pr-1 text-white cursor-pointer text-2xl sm:text-3xl lg:text-4xl font-extrabold z-10 hover:scale-110 active:scale-100 transition-transform duration-200 ease-linear "
       >
         {"〉"}
-      </div>
+      </motion.div>
     </AnimatePresence>
   );
 };

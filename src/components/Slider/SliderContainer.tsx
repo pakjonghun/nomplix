@@ -50,17 +50,36 @@ const SliderContainer: FC<SliderContainerProps> = ({
   };
 
   const onPlusClick = (totalPage: number) => {
-    if (!index) return;
     setDirection(1);
-    const cur = index === totalPage - 1 ? 0 : index + 1;
+    let cur = 0;
+    switch (index) {
+      case null:
+        cur = 1;
+        break;
+      case totalPage - 1:
+        cur = 0;
+        break;
+      default:
+        cur = index + 1;
+        break;
+    }
     setIndex(cur);
     localStorage.setItem(title, JSON.stringify(cur));
   };
 
   const onMinusClick = (totalPage: number) => {
-    if (!index) return;
     setDirection(-1);
-    const cur = !index ? totalPage - 1 : index - 1;
+    let cur = 0;
+    switch (index) {
+      case null:
+      case 0:
+        cur = totalPage - 1;
+        break;
+      default:
+        cur = index - 1;
+        break;
+    }
+
     setIndex(cur);
     localStorage.setItem(title, JSON.stringify(cur));
   };
