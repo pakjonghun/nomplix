@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { movieApis } from "../store/apis/apis";
 import { imageUrlMaker, sentenseShortter } from "../utilities/utility";
-import { motion } from "framer-motion";
+import { motion, useTransform, useViewportScroll } from "framer-motion";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Detail from "../components/Detail";
 import Slider from "../components/Slider";
@@ -13,6 +13,9 @@ import { useAppDispatch } from "../hooks/store";
 import { getNowPlaying } from "../store/reducers/movies";
 
 const Home = () => {
+  const { scrollY } = useViewportScroll();
+  const upOpacity = useTransform(scrollY, [150, 200], [1, 0]);
+
   const dispatch = useAppDispatch();
   const { isLoading, isError, error, data } = useQuery<TypeData<TypeMovie>>(
     ["movie", "nowplay"],
@@ -20,7 +23,7 @@ const Home = () => {
   );
 
   const topQuery = useQuery<TypeData<TypeMovie>>(
-    ["movie", "toop"],
+    ["movie", "top"],
     movieApis.topRated
   );
 
@@ -78,7 +81,12 @@ const Home = () => {
             }}
             className="flex flex-col justify-center w-full h-screen2/3 2xl:h-screen xl:h-screen6/7 lg:h-screen3/5 bg-cover bg-no-repeat transparent transition-all duration 100"
           >
-            <div style={{ marginTop: "-5%" }}>
+            <motion.div
+              style={{
+                opacity: upOpacity,
+                marginTop: "-5%",
+              }}
+            >
               <h1 className=" font-bold mt-7 mb-5">
                 {data?.results[0].original_title}
               </h1>
@@ -96,7 +104,7 @@ const Home = () => {
               >
                 More
               </motion.button>
-            </div>
+            </motion.div>
           </motion.section>
 
           <section className="relative -top-32 lg:-top-10 w-full px-1 ">

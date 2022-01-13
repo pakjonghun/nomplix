@@ -70,6 +70,9 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
           throw new Error("InputAnimation error");
       }
     };
+
+    checkW(window.innerWidth);
+
     window.addEventListener(
       "resize",
       dbounce(() => checkW(window.innerWidth))

@@ -11,7 +11,7 @@ type SliderPresenterProps = {
   };
   props: {
     direction: number;
-    index: number;
+    index: number | null;
     itemCount: number;
     title: string;
   };

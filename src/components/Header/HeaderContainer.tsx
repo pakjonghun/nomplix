@@ -29,7 +29,7 @@ const HeaderContainer = () => {
 
   const rgb = useTransform(
     scrollY,
-    [0, 80],
+    [0, 195],
     ["rgba(0,0,0,1)", "rgba(0,0,0,0)"]
   );
 

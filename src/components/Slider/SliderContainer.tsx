@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TypeData, TypeMovie } from "../../utilities/types";
 import SliderPresenter from "./SliderPresent";
@@ -14,9 +14,24 @@ const SliderContainer: FC<SliderContainerProps> = ({
   itemCount,
   title,
 }) => {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState<null | number>(null);
   const [direction, setDirection] = useState(1);
   const [isSliding, setIsSliding] = useState(false);
+
+  useEffect(() => {
+    const localIndex = localStorage.getItem(title);
+    switch (typeof localIndex) {
+      case "object":
+        setIndex(0);
+        break;
+      case "string":
+        if (isNaN(+localIndex)) return;
+        setIndex(+localIndex);
+        break;
+      default:
+        break;
+    }
+  }, [title]);
 
   const navigate = useNavigate();
 
@@ -24,7 +39,8 @@ const SliderContainer: FC<SliderContainerProps> = ({
     setIsSliding(false);
   };
 
-  const offset = (index: number) => {
+  const offset = (index: number | null) => {
+    if (index == null) return;
     if (!data) return [];
     return data.results.slice(index * itemCount, (1 + index) * itemCount);
   };
@@ -34,13 +50,19 @@ const SliderContainer: FC<SliderContainerProps> = ({
   };
 
   const onPlusClick = (totalPage: number) => {
+    if (!index) return;
     setDirection(1);
-    setIndex(index === totalPage - 1 ? 0 : index + 1);
+    const cur = index === totalPage - 1 ? 0 : index + 1;
+    setIndex(cur);
+    localStorage.setItem(title, JSON.stringify(cur));
   };
 
   const onMinusClick = (totalPage: number) => {
+    if (!index) return;
     setDirection(-1);
-    setIndex(!index ? totalPage - 1 : index - 1);
+    const cur = !index ? totalPage - 1 : index - 1;
+    setIndex(cur);
+    localStorage.setItem(title, JSON.stringify(cur));
   };
 
   const onClickController = (direction: number) => {
@@ -62,12 +84,18 @@ const SliderContainer: FC<SliderContainerProps> = ({
     }
   };
 
+  const Data = offset(index);
+
   return (
-    <SliderPresenter
-      funcs={{ onExitComplete, onItemClick, onClickController }}
-      data={offset(index)}
-      props={{ index, title, direction, itemCount }}
-    />
+    <>
+      {Data == null ? null : (
+        <SliderPresenter
+          funcs={{ onExitComplete, onItemClick, onClickController }}
+          data={Data}
+          props={{ index, title, direction, itemCount }}
+        />
+      )}
+    </>
   );
 };
 

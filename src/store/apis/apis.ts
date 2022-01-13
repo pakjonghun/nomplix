@@ -19,4 +19,5 @@ export const movieApis = {
   search: (term: string) =>
     getData(`${BASIC_URL}/search/movie?api_key=${API_KEY}&query=${term}`),
   topRated: () => getData(`${BASIC_URL}/movie/top_rated?api_key=${API_KEY}`),
+  popular: () => getData(`${BASIC_URL}/movie/popular?api_key=${API_KEY}`),
 };

@@ -19,8 +19,8 @@ const Detail: FC<{ curMovie: TypeMovie }> = ({ curMovie }) => {
     ["movie", "video"],
     () => movieApis.video(id)
   );
-  const { scrollY } = useViewportScroll();
 
+  const { scrollY } = useViewportScroll();
   return (
     <motion.div
       style={{
@@ -65,20 +65,23 @@ const Detail: FC<{ curMovie: TypeMovie }> = ({ curMovie }) => {
               {isVLoading ? (
                 <Loading />
               ) : (
-                <div
-                  style={{ paddingBottom: "70%" }}
-                  className="relative w-full h-0 overflow-hidden"
-                >
-                  <iframe
-                    className="absolute top-0 left-0 w-full h-full"
-                    title={Vdata?.results[0].name}
-                    src={
-                      Vdata?.results[0]
-                        ? videoUrlMaker(Vdata?.results[0].key)
-                        : ""
-                    }
-                  />
-                </div>
+                Vdata?.results &&
+                Vdata.results.length !== 0 && (
+                  <div
+                    style={{ paddingBottom: "70%" }}
+                    className="relative w-full h-0 overflow-hidden"
+                  >
+                    <iframe
+                      className="absolute top-0 left-0 w-full h-full"
+                      title={Vdata?.results[0].name || ""}
+                      src={
+                        Vdata?.results[0]
+                          ? videoUrlMaker(Vdata?.results[0].key)
+                          : ""
+                      }
+                    />
+                  </div>
+                )
               )}
             </div>
             <p className="mt-5">{curMovie.overview}</p>
