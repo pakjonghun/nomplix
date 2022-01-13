@@ -36,31 +36,35 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
   const { setFocus, handleSubmit, onSubmit, register, toggleIsSearching } =
     funcs;
 
-  const [isLg, setIsLg] = useState(false);
-  const [isXl, setIsXl] = useState(false);
-  console.log(isLg);
+  const [curW, setCurW] = useState("sm");
   useEffect(() => {
     let time: any;
     function dbounce(cb: Function) {
       return function () {
         if (time) clearTimeout(time);
-        time = setTimeout(cb, 500);
+        time = setTimeout(cb, 100);
       };
     }
 
     const checkW = (w: number) => {
       switch (true) {
-        case w < 1024:
-          setIsLg(false);
-          setIsXl(false);
+        case w < 640:
+          setCurW("xs");
           return;
-        case w >= 1024 && w < 1536:
-          setIsXl(false);
-          setIsLg(true);
+        case w >= 640 && w < 768:
+          setCurW("sm");
+          return;
+        case w >= 768 && w < 1024:
+          setCurW("md");
+          return;
+        case w >= 1024 && w < 1280:
+          setCurW("lg");
+          return;
+        case w >= 1280 && w < 1536:
+          setCurW("xl");
           return;
         case w >= 1536:
-          setIsLg(false);
-          setIsXl(true);
+          setCurW("2xl");
           return;
         default:
           throw new Error("InputAnimation error");
@@ -75,20 +79,7 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
         "resize",
         dbounce(() => checkW(window.innerWidth))
       );
-  }, [isLg, isXl]);
-
-  const getSearchAni = () => {
-    switch (true) {
-      case !isLg && !isXl:
-        return "normal";
-      case !isLg && isXl:
-        return "xl";
-      case isLg && !isXl:
-        return "lg";
-      default:
-        throw new Error("resize error");
-    }
-  };
+  }, []);
 
   return (
     <div className="md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
@@ -136,49 +127,55 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
           </li>
         </ul>
         <ul>
-          <li className=" relative flex flex-col justify-center w-full ">
-            <AnimatePresence initial={false} custom={isSearching}>
-              <motion.svg
-                key={getId()}
-                initial={"i" + getSearchAni()}
-                animate={getSearchAni()}
-                variants={searchIconAni}
-                custom={isSearching}
-                className={`absolute w-5 left-0 md:w-6 lg:w-7 xl:w-8 2xl:w-9 m-0 p-0 menu text-stone-400 z-20`}
-                onClick={() => {
-                  if (!isSearching) setFocus("term");
-                  toggleIsSearching(!isSearching);
-                }}
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-              >
-                <motion.path
-                  fill="currentColor"
-                  d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
-                />
-              </motion.svg>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <motion.input
+          <li className=" relative flex items-center ">
+            <motion.svg
+              variants={searchIconAni}
+              animate={curW}
+              custom={isSearching}
+              className={` ${
+                isSearching ? " left-0" : "right-0"
+              } w-5 md:w-6 lg:w-7 xl:w-8 2xl:w-9 m-0 p-0 text-stone-400 z-20 cursor-pointer`}
+              onClick={() => {
+                console.log(1);
+                if (!isSearching) setFocus("term");
+                toggleIsSearching(!isSearching);
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
+              <motion.path
+                fill="currentColor"
+                d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+              />
+            </motion.svg>
+            <form onSubmit={handleSubmit(onSubmit)} className="bg-red-50">
+              {/* <motion.input
                   {...register("term", {
                     required: { value: true, message: "required" },
                   })}
-                  custom={isSearching}
-                  variants={searchInputAni}
-                  initial="initial"
-                  animate="animate"
-                  className="searchInput z-10 origin-right"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 1 }}
+                  className="searchInput z-10 origin-right bg-red-50 searchInput"
                   placeholder="Search for"
-                />
-              </form>
-              {errors?.term?.message && (
-                <p
-                  key={getId()}
-                  className="absolute -bottom-5 ml-1 text-red-500 text-xs"
-                >
-                  {errors.term.message}
-                </p>
-              )}
-            </AnimatePresence>
+                /> */}
+              <input
+                {...register("term")}
+                style={{}}
+                type="text"
+                className={` p-1 w-40 pl-7  sm:w-52 sm:py-2 sm:pl-10 md:w-56 md:py-3 md:pl-11 lg:w-64 lg:py-4 lg:pl-12 xl:w-68 xl:py-5 xl:pl-14 2xl:w-72 2xl:py-5 2xl:pl-14 bg-stone-300/20 border-2 border-stone-500 focus:ring-1 focus:ring-stone-200 focus:outline-none absolute to-1/2 right-0  -translate-y-1/2 origin-right transition-all ease-linear duration-200 ${
+                  isSearching ? " scale-x-1" : "scale-x-0"
+                }`}
+              />
+            </form>
+            {errors?.term?.message && (
+              <p
+                key={getId()}
+                className="absolute -bottom-5 ml-1 text-red-500 text-xs"
+              >
+                {errors.term.message}
+              </p>
+            )}
           </li>
         </ul>
       </motion.header>

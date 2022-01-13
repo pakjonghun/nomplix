@@ -5,7 +5,7 @@
 }
 
 .header {
-  @apply flex justify-between items-center px-5 py-4 text-stone-50;
+  @apply flex justify-between items-center px-10 py-4 text-stone-50;
 }
 
 .searchInput {

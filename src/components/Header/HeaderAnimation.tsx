@@ -5,25 +5,43 @@ export const logoAni = {
 };
 
 export const searchIconAni = {
-  inormal: (isSearching: boolean) => ({ x: isSearching ? 200 : 10 }),
-  normal: (isSearching: boolean) => ({
-    x: isSearching ? 10 : 200,
+  xs: (isSearching: boolean) => ({
+    x: isSearching ? -135 : 0,
     transition: {
       type: "linear",
       duration: 0.2,
     },
   }),
-  ilg: (isSearching: boolean) => ({ x: isSearching ? 300 : 11 }),
+  sm: (isSearching: boolean) => ({
+    x: isSearching ? -173 : 0,
+    transition: {
+      type: "linear",
+      duration: 0.2,
+    },
+  }),
+  md: (isSearching: boolean) => ({
+    x: isSearching ? -188 : 0,
+    transition: {
+      type: "linear",
+      duration: 0.2,
+    },
+  }),
   lg: (isSearching: boolean) => ({
-    x: isSearching ? 11 : 300,
+    x: isSearching ? -214 : 0,
     transition: {
       type: "linear",
       duration: 0.2,
     },
   }),
-  ixl: (isSearching: boolean) => ({ x: isSearching ? 350 : 12 }),
   xl: (isSearching: boolean) => ({
-    x: isSearching ? 12 : 350,
+    x: isSearching ? -210 : 0,
+    transition: {
+      type: "linear",
+      duration: 0.2,
+    },
+  }),
+  "2xl": (isSearching: boolean) => ({
+    x: isSearching ? -237 : 0,
     transition: {
       type: "linear",
       duration: 0.2,
