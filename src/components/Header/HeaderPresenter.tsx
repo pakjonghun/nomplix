@@ -38,22 +38,27 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
 
   const [isLg, setIsLg] = useState(false);
   const [isXl, setIsXl] = useState(false);
-
+  console.log(isLg);
   useEffect(() => {
+    let time: any;
+    function dbounce(cb: Function) {
+      return function () {
+        if (time) clearTimeout(time);
+        time = setTimeout(cb, 500);
+      };
+    }
+
     const checkW = (w: number) => {
       switch (true) {
         case w < 1024:
-          // if (!isLg && !isXl) return;
-          if (!isLg) setIsLg(false);
-          if (!isXl) setIsXl(false);
+          setIsLg(false);
+          setIsXl(false);
           return;
         case w >= 1024 && w < 1536:
-          // if (isLg && !isXl) return;
-          if (!isXl) setIsXl(false);
+          setIsXl(false);
           setIsLg(true);
           return;
         case w >= 1536:
-          // if (isXl && !isLg) return;
           setIsLg(false);
           setIsXl(true);
           return;
@@ -61,9 +66,15 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
           throw new Error("InputAnimation error");
       }
     };
-    window.addEventListener("resize", () => checkW(window.innerWidth));
+    window.addEventListener(
+      "resize",
+      dbounce(() => checkW(window.innerWidth))
+    );
     return () =>
-      window.removeEventListener("resize", () => checkW(window.innerWidth));
+      window.removeEventListener(
+        "resize",
+        dbounce(() => checkW(window.innerWidth))
+      );
   }, [isLg, isXl]);
 
   const getSearchAni = () => {
