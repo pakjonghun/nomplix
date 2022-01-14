@@ -2,6 +2,8 @@ import React, { FC } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getId, imageUrlMaker } from "../../utilities/utility";
 import { imgAni, pagingAni } from "./SliderAnimation";
+import { TypeSlider } from "../../utilities/types";
+import emptyImg from "../../images/empty.jpeg";
 
 type SliderPresenterProps = {
   funcs: {
@@ -15,14 +17,7 @@ type SliderPresenterProps = {
     itemCount: number;
     title: string;
   };
-  data: TypeData[];
-};
-
-type TypeData = {
-  id: number;
-  title: string;
-  original_title: string;
-  backdrop_path: string;
+  data: TypeSlider[];
 };
 
 const SliderPresenter: FC<SliderPresenterProps> = ({ funcs, props, data }) => {
@@ -67,8 +62,8 @@ const SliderPresenter: FC<SliderPresenterProps> = ({ funcs, props, data }) => {
               className="flex flex-col items-center justify-center first:origin-left last:origin-right group cursor-pointer"
             >
               <img
-                alt={item.original_title}
-                src={imageUrlMaker(item.backdrop_path, "w500")}
+                alt={item.title}
+                src={imageUrlMaker(item.backdrop_path, "w500") || emptyImg}
               />
 
               <motion.div

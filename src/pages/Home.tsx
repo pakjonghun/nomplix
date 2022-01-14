@@ -6,7 +6,7 @@ import { motion, useTransform, useViewportScroll } from "framer-motion";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Detail from "../components/Detail";
 import Slider from "../components/Slider";
-import { TypeData, TypeMovie } from "../utilities/types";
+import { QueryTypes, TypeData, TypeMovie } from "../utilities/types";
 import Modal from "../components/Modal";
 import ClientStatusWrapper from "../components/ClientStatusWrapper";
 import { useAppDispatch } from "../hooks/store";
@@ -57,6 +57,7 @@ const Home = () => {
   const clickedMovie = (id: string) => {
     const key = clickedQuery();
     if (!key.trim().length) return 0;
+
     const data = getCurMovie(key);
     if (!data) return 0;
     const result = data.results.find((m) => m.id === +id);
@@ -67,6 +68,26 @@ const Home = () => {
   const curMovie = id && clickedMovie(id);
   const booleans = { isLoading, isError, isSuccess: data?.isSuccess };
   const rest = { error, statusMessage: data?.status_message };
+  const getSliderData = (key: keyof typeof QueryTypes) => {
+    let curData;
+    switch (key) {
+      case "nowplaying":
+        curData = data?.results;
+        break;
+      case "toprated":
+        curData = topQuery.data?.results;
+        break;
+      default:
+        throw new Error("error on get slider data");
+    }
+
+    if (!curData) return;
+    return curData.map((item) => ({
+      id: item.id,
+      backdrop_path: item.backdrop_path,
+      title: item.title,
+    }));
+  };
 
   return (
     <ClientStatusWrapper booleans={booleans} rest={rest}>
@@ -108,27 +129,21 @@ const Home = () => {
           </motion.section>
 
           <section className="relative -top-32 lg:-top-10 w-full px-1 ">
-            <div
-              style={{ paddingBottom: "20%" }}
-              className="relative flex items-center justify-between w-full h-20 px-1"
-            >
-              {<Slider data={data} title={"nowplaying"} itemCount={5} />}
-            </div>
+            {[QueryTypes.toprated, QueryTypes.nowplaying].map((item) => {
+              const data = getSliderData(item);
 
-            {!topQuery.isLoading && topQuery.data && (
-              <div
-                style={{ paddingBottom: "20%" }}
-                className="relative flex items-center justify-between w-full h-20 px-1"
-              >
-                {
-                  <Slider
-                    data={topQuery.data}
-                    title={"toprated"}
-                    itemCount={5}
-                  />
-                }
-              </div>
-            )}
+              return (
+                data && (
+                  <div
+                    key={item}
+                    style={{ paddingBottom: "20%" }}
+                    className="relative flex items-center justify-between w-full h-20 px-1"
+                  >
+                    {<Slider data={data} title={item} itemCount={5} />}
+                  </div>
+                )
+              );
+            })}
           </section>
 
           <Modal childId="modal" backAdress="/">

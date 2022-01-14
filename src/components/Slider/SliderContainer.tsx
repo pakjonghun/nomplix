@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TypeData, TypeMovie } from "../../utilities/types";
+import { TypeData, TypeMovie, TypeSlider } from "../../utilities/types";
 import SliderPresenter from "./SliderPresent";
 
 type SliderContainerProps = {
-  data: TypeData<TypeMovie>;
+  data: TypeSlider[];
   itemCount: number;
   title: string;
 };
@@ -42,7 +42,7 @@ const SliderContainer: FC<SliderContainerProps> = ({
   const offset = (index: number | null) => {
     if (index == null) return;
     if (!data) return [];
-    return data.results.slice(index * itemCount, (1 + index) * itemCount);
+    return data.slice(index * itemCount, (1 + index) * itemCount);
   };
 
   const onItemClick = (id: number) => {
@@ -86,9 +86,9 @@ const SliderContainer: FC<SliderContainerProps> = ({
 
   const onClickController = (direction: number) => {
     if (isSliding) return;
-    if (!data?.results) return;
-    if (!data.results.length) return;
-    const totalPage = Math.floor(data.results.length / itemCount);
+    if (!data) return;
+    if (!data.length) return;
+    const totalPage = Math.floor(data.length / itemCount);
     setIsSliding(true);
 
     switch (direction) {
@@ -107,7 +107,7 @@ const SliderContainer: FC<SliderContainerProps> = ({
 
   return (
     <>
-      {Data == null ? null : (
+      {Data && (
         <SliderPresenter
           funcs={{ onExitComplete, onItemClick, onClickController }}
           data={Data}

@@ -636,6 +636,10 @@ h2 {
   bottom: 0.5rem;
 }
 
+.top-5 {
+  top: 1.25rem;
+}
+
 .z-20 {
   z-index: 20;
 }
@@ -923,6 +927,11 @@ h2 {
 
 .bg-stone-300\/20 {
   background-color: rgb(214 211 209 / 0.2);
+}
+
+.bg-red-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(252 165 165 / var(--tw-bg-opacity));
 }
 
 .bg-gradient-to-b {

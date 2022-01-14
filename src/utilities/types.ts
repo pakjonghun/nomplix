@@ -19,6 +19,12 @@ export type TypeMovie = {
   vote_count: number;
 };
 
+export type TypeSlider = {
+  id: number;
+  backdrop_path: string;
+  title: string;
+};
+
 export type TypeData<T> = {
   isSuccess?: boolean;
   status_message?: string;
@@ -117,3 +123,10 @@ export type TypeTvOnAir = {
   vote_average: number;
   vote_count: number;
 };
+
+export enum QueryTypes {
+  "nowplaying" = "nowplaying",
+  "toprated" = "toprated",
+  "popular" = "popular",
+  "onair" = "onair",
+}
