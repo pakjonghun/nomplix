@@ -15,7 +15,10 @@ const Routers = () => {
             <Route path="toprated/:id" element={<Home />} />
             <Route path="nowplaying/:id" element={<Home />} />
           </Route>
-          <Route path="tv" element={<TV />} />
+          <Route path="tv" element={<TV />}>
+            <Route path="popular/:id" element={<TV />} />
+            <Route path="onair/:id" element={<TV />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

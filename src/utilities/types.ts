@@ -124,6 +124,17 @@ export type TypeTvOnAir = {
   vote_count: number;
 };
 
+export type TypeCurMovie = {
+  id: number;
+  backdrop_path: string;
+  title: string;
+  original_title: string;
+  release_date: string;
+  original_language: string;
+  vote_average: number;
+  overview: string;
+};
+
 export enum QueryTypes {
   "nowplaying" = "nowplaying",
   "toprated" = "toprated",

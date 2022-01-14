@@ -1,12 +1,12 @@
-import React, { FC, useEffect, useLayoutEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TypeData, TypeMovie, TypeSlider } from "../../utilities/types";
+import { QueryTypes, TypeSlider } from "../../utilities/types";
 import SliderPresenter from "./SliderPresent";
 
 type SliderContainerProps = {
   data: TypeSlider[];
   itemCount: number;
-  title: string;
+  title: keyof typeof QueryTypes;
 };
 
 const SliderContainer: FC<SliderContainerProps> = ({
@@ -46,7 +46,21 @@ const SliderContainer: FC<SliderContainerProps> = ({
   };
 
   const onItemClick = (id: number) => {
-    navigate(`/movies/${title}/${id}`);
+    let main;
+    switch (title) {
+      case "nowplaying":
+      case "toprated":
+        main = "movies";
+        break;
+      case "onair":
+      case "popular":
+        main = "tv";
+        break;
+      default:
+        throw new Error("no adress");
+    }
+
+    navigate(`/${main}/${title}/${id}`);
   };
 
   const onPlusClick = (totalPage: number) => {

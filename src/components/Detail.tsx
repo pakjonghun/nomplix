@@ -4,10 +4,14 @@ import { movieApis } from "../store/apis/apis";
 import { motion, useViewportScroll } from "framer-motion";
 import { imageUrlMaker, videoUrlMaker } from "../utilities/utility";
 import Stars from "./Stars";
-import { TypeMovie, TypeMovieDetail, TypeVideoData } from "../utilities/types";
+import {
+  TypeCurMovie,
+  TypeMovieDetail,
+  TypeVideoData,
+} from "../utilities/types";
 import Loading from "./Loading";
 
-const Detail: FC<{ curMovie: TypeMovie }> = ({ curMovie }) => {
+const Detail: FC<{ curMovie: TypeCurMovie }> = ({ curMovie }) => {
   const id = curMovie.id.toString();
 
   const { isLoading, data } = useQuery<TypeMovieDetail>(
