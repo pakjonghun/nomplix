@@ -20,8 +20,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "NODE_ENV='production' & npm build:tailwind",
     "build:tailwind": "npx tailwindcss -i ./src/styles/tailwind.css -o ./src/styles/style.css --minify",
+    "prebuild": "NODE_ENV='production' & npm run build:tailwind",
     "build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
