@@ -88,7 +88,7 @@ const HeaderPresenter: FC<HeaderPresenterProps> = ({ props, funcs }) => {
     <div className="md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
       <motion.header
         style={{ backgroundColor: rgb }}
-        className="fixed top-0 w-full header"
+        className="fixed top-0 w-full header z-10"
       >
         <ul className="flex">
           <li>
