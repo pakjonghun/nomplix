@@ -13,6 +13,7 @@ import Loading from "./Loading";
 
 const Detail: FC<{ curMovie: TypeCurMovie }> = ({ curMovie }) => {
   const id = curMovie.id.toString();
+  console.log(curMovie);
 
   const { isLoading, data } = useQuery<TypeMovieDetail>(
     ["movie", "detail"],

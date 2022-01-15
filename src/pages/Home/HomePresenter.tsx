@@ -38,7 +38,6 @@ const HomePresenter: FC<HomePresenterProps> = ({ data, page, rest }) => {
   const { topData, playData, getSliderData, curMovie } = data;
   const { topPage, setTop, setPlay } = page;
   const { upOpacity, navigate } = rest;
-
   return (
     <>
       {topData?.results && playData?.results && (

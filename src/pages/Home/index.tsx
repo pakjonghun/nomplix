@@ -1,2 +1,2 @@
-import Home from "./Home";
+import Home from "./HomeContainer";
 export default Home;

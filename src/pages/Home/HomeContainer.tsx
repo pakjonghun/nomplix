@@ -35,7 +35,7 @@ const Home = () => {
   const getCurMovie = (queryKey: string) => {
     switch (queryKey) {
       case "nowplaying":
-        return topData ? topData : 0;
+        return playData ? playData : 0;
       case "toprated":
         return topData ? topData : 0;
       default:
