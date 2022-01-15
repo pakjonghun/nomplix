@@ -63,7 +63,8 @@ const SliderPresenter: FC<SliderPresenterProps> = ({ funcs, props, data }) => {
             >
               <img
                 alt={item.title}
-                src={imageUrlMaker(item.backdrop_path, "w500") || emptyImg}
+                src={imageUrlMaker(item.backdrop_path)}
+                onError={(event) => (event.currentTarget.src = emptyImg)}
               />
 
               <motion.div

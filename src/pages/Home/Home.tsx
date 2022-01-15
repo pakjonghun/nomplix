@@ -1,35 +1,26 @@
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
-import { movieApis } from "../store/apis/apis";
-import { imageUrlMaker, sentenseShortter } from "../utilities/utility";
+import { movieApis } from "../../store/apis/apis";
+import { imageUrlMaker, sentenseShortter } from "../../utilities/utility";
 import { motion, useTransform, useViewportScroll } from "framer-motion";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import Detail from "../components/Detail";
-import Slider from "../components/Slider";
-import { QueryTypes, TypeData, TypeMovie } from "../utilities/types";
-import Modal from "../components/Modal";
-import ClientStatusWrapper from "../components/ClientStatusWrapper";
-import { useAppDispatch } from "../hooks/store";
-import { getNowPlaying } from "../store/reducers/movies";
+import Detail from "../../components/Detail";
+import Slider from "../../components/Slider";
+import { QueryTypes, TypeData, TypeMovie } from "../../utilities/types";
+import Modal from "../../components/Modal";
+import { useAppDispatch } from "../../hooks/store";
+import { getNowPlaying } from "../../store/reducers/movies";
+import { Spinner } from "@chakra-ui/react";
+import { useNowPlayingQuery, useTopRatedQuery } from "../hooks/useQuery";
+import empty from "../../images/empty.jpeg";
+import { movieKeys } from "../../reactQuery/keys";
 
 const Home = () => {
   const { scrollY } = useViewportScroll();
   const upOpacity = useTransform(scrollY, [150, 200], [1, 0]);
 
-  const dispatch = useAppDispatch();
-  const { isLoading, isError, error, data } = useQuery<TypeData<TypeMovie>>(
-    ["movie", "nowplay"],
-    movieApis.nowPlaying
-  );
-
-  const topQuery = useQuery<TypeData<TypeMovie>>(
-    ["movie", "top"],
-    movieApis.topRated
-  );
-
-  useEffect(() => {
-    if (data?.results) dispatch(getNowPlaying(data.results));
-  }, [data, dispatch]);
+  const { data, isLoading, curPage, setCurPage } = useNowPlayingQuery();
+  const topQuery = useTopRatedQuery();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -66,8 +57,6 @@ const Home = () => {
   };
 
   const curMovie = id && clickedMovie(id);
-  const booleans = { isLoading, isError, isSuccess: data?.isSuccess };
-  const rest = { error, statusMessage: data?.status_message };
   const getSliderData = (key: keyof typeof QueryTypes) => {
     let curData;
     switch (key) {
@@ -89,29 +78,60 @@ const Home = () => {
     }));
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
-    <ClientStatusWrapper booleans={booleans} rest={rest}>
+    <>
       {data?.results && (
-        <div className="flex flex-col min-h-screen w-full md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl bg-black text-white">
+        <div className="flex flex-col justify-center min-h-screen w-full md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl bg-black text-white">
           <motion.section
             style={{
               backgroundImage: `linear-gradient(rgba(0,0,0,0),rgba(0, 0, 0, 1)), url(
                   ${imageUrlMaker(data.results[0]?.backdrop_path || "", "w500")}
-                )`,
+                ),url(${empty})`,
               padding: "4%",
             }}
             className="flex flex-col justify-center w-full h-screen2/3 2xl:h-screen xl:h-screen6/7 lg:h-screen3/5 bg-cover bg-no-repeat transparent transition-all duration 100"
           >
+            <div className="absolute right-5 top-32 lg:right-7">
+              <button
+                className="hover:scale-105 active:scale-100 transition-all duration-100 ease-linear m-2 px-2 py-1 border-2 border-white rounded-md cursor-pointer "
+                disabled={curPage < 2}
+                onClick={() => {
+                  topQuery.setCurPage((pre) => pre - 1);
+                  setCurPage((pre) => pre - 1);
+                }}
+              >
+                Prev
+              </button>
+              <button
+                className="hover:scale-105 active:scale-100 transition-all duration-100 ease-linear m-2 px-2 py-1 border-2 border-white rounded-md cursor-pointer "
+                disabled={curPage >= data.total_pages}
+                onClick={() => {
+                  topQuery.setCurPage((pre) => pre + 1);
+                  setCurPage((pre) => pre + 1);
+                }}
+              >
+                Next
+              </button>
+            </div>
             <motion.div
               style={{
                 opacity: upOpacity,
                 marginTop: "-5%",
               }}
+              className="w-1/2"
             >
               <h1 className=" font-bold mt-7 mb-5">
                 {data?.results[0].original_title}
               </h1>
-              <p className="w-1/2 mb-3">
+              <p className=" mb-3">
                 {data?.results[0].overview &&
                   sentenseShortter(data.results[0].overview, 250)}
               </p>
@@ -128,7 +148,7 @@ const Home = () => {
             </motion.div>
           </motion.section>
 
-          <section className="relative -top-32 lg:-top-10 w-full px-1 ">
+          <section className="relative -top-20 lg:-top-10 w-full px-1 ">
             {[QueryTypes.toprated, QueryTypes.nowplaying].map((item) => {
               const data = getSliderData(item);
 
@@ -151,7 +171,7 @@ const Home = () => {
           </Modal>
         </div>
       )}
-    </ClientStatusWrapper>
+    </>
   );
 };
 

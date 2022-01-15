@@ -94,7 +94,6 @@ const SliderContainer: FC<SliderContainerProps> = ({
         break;
     }
 
-    setIndex(cur);
     localStorage.setItem(title, JSON.stringify(cur));
   };
 

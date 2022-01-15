@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "framer-motion": "^5.5.6",
+    "@chakra-ui/react": "^1.7.4",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "framer-motion": "^5.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-helmet-async": "^1.2.2",
@@ -20,7 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build:tailwind": "npx tailwindcss -i ./src/styles/tailwind.css -o ./src/styles/style.css --minify",
+    "build:tailwind": "npx tailwindcss -i ./src/styles/tailwind.css -o ./src/styles/style.css --watch",
     "prebuild": "NODE_ENV='production' & npm run build:tailwind",
     "build": "CI=false react-scripts build",
     "test": "react-scripts test",
@@ -46,8 +49,6 @@
   },
   "devDependencies": {
     "@reduxjs/toolkit": "^1.7.1",
-    "@types/react-redux": "^7.1.22",
-    "@types/redux": "^3.6.0",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -57,8 +58,10 @@
     "@types/react-dom": "^17.0.11",
     "@types/react-helmet-async": "^1.0.3",
     "@types/react-query": "^1.2.9",
+    "@types/react-redux": "^7.1.22",
     "@types/react-router-dom": "^5.3.2",
     "@types/recoil": "^0.0.9",
+    "@types/redux": "^3.6.0",
     "autoprefixer": "^10.4.2",
     "postcss": "^8.4.5",
     "tailwindcss": "^3.0.12"
